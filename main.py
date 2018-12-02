@@ -11,16 +11,21 @@ from matplotlib import pyplot as pl
 from IPython.display import clear_output
 from DQN import DQN_MLP, ReplayBuffer, init_weights
 from GridWorldSimon import gameEnv
+from torch.autograd import Variable
 
 
-#
-env = gym.make('Taxi-v2')
-eval_env = gym.make('Taxi-v2')
 Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done'))
+is_chen = False
+# is_chen = True
 #
-# grid_dim = 5
-# num_of_obj = 1
-# env = gameEnv(size=grid_dim,startDelay=num_of_obj)
+if is_chen:
+    env = gym.make('Taxi-v2')
+    eval_env = gym.make('Taxi-v2')
+else:
+    grid_dim = 3
+    num_of_obj = 1
+    env = gameEnv(size=grid_dim,startDelay=num_of_obj)
+    eval_env = gameEnv(size=grid_dim,startDelay=num_of_obj)
 
 
 input_size = env.observation_space.n
@@ -56,19 +61,37 @@ losses_steps = []
 
 done = True
 for step in range(num_steps):
-    if done:
-        state_idx = env.reset()
-        state = torch.zeros([input_size], dtype=torch.float32)
-        state[state_idx] = 1
 
-    action = network(state.unsqueeze(0)).max(1)[1].item()
+    if done:
+        if is_chen:
+            state_idx = env.reset()
+            state = torch.zeros([input_size], dtype=torch.float32)
+            state[state_idx] = 1
+        else:
+            state = env.reset()
+            state = np.reshape(state, (1, -1))
+            state = torch.from_numpy(state)
+            dtype = torch.float32
+            state = Variable(state.type(dtype))
+    if is_chen:
+        action = network(state.unsqueeze(0)).max(1)[1].item()
+    else:
+        action = network(state).max(1)[1].item()
     eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
     if random.random() < eps:
         action = env.action_space.sample()
 
-    next_state_idx, reward, done, _ = env.step(action)
-    next_state = torch.zeros([input_size], dtype=torch.float32)
-    next_state[next_state_idx] = 1
+    if is_chen:
+        next_state_idx, reward, done, _ = env.step(action)
+        next_state = torch.zeros([input_size], dtype=torch.float32)
+        next_state[next_state_idx] = 1
+    else:
+        next_state, reward, done, _ = env.step(action)
+        next_state = np.reshape(next_state, (1, -1))
+        next_state = torch.from_numpy(next_state)
+        dtype = torch.float32
+        next_state = Variable(next_state.type(dtype))
+
     # Done due to timeout is a non-markovian property. This is an artifact which we would not like to learn from.
     if not (done and reward < 0):
         memory.add(state, action, reward, next_state, not done)
@@ -94,7 +117,8 @@ for step in range(num_steps):
             target_Q = batch_reward + (gamma * next_Q) * not_done_mask
 
         loss = F.smooth_l1_loss(current_Q, target_Q)
-        all_params = torch.cat([x.view(-1) for x in model.parameters()])
+        # all_params = torch.cat([x.view(-1) for x in model.parameters()])
+        all_params = torch.cat([x.view(-1) for x in network.parameters()]) # TODO - ask chen why it was model and if its really should be network
         loss += l1_regularization * torch.norm(all_params, 1)
 
         optimizer.zero_grad()
@@ -112,15 +136,28 @@ for step in range(num_steps):
         network.eval()
         total_reward = 0
         for eval_ep in range(eval_episodes):
-            eval_state_idx = eval_env.reset()
+            if is_chen:
+                eval_state_idx = eval_env.reset()
+            else:
+                eval_state = eval_env.reset()
             while True:
-                eval_state = torch.zeros([input_size], dtype=torch.float32)
-                eval_state[eval_state_idx] = 1
-
-                action = network(eval_state.unsqueeze(0)).max(1)[1].item()
+                eval_env.render()
+                if is_chen:
+                    eval_state = torch.zeros([input_size], dtype=torch.float32)
+                    eval_state[eval_state_idx] = 1
+                    action = network(eval_state.unsqueeze(0)).max(1)[1].item()
+                else:
+                    eval_state = np.reshape(eval_state, (1, -1))
+                    eval_state = torch.from_numpy(eval_state)
+                    dtype = torch.float32
+                    eval_state = Variable(eval_state.type(dtype))
+                    action = network(state).max(1)[1].item()
                 if random.random() < 0.01:
                     action = random.randrange(output_size)
-                eval_state_idx, reward, done, _ = eval_env.step(action)
+                if is_chen:
+                    eval_state_idx, reward, done, _ = eval_env.step(action)
+                else:
+                    eval_state, reward, done, _ = eval_env.step(action)
 
                 total_reward += reward
                 if done:

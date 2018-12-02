@@ -3,6 +3,7 @@ import itertools
 import scipy.misc
 import matplotlib.pyplot as plt
 import visdom
+import gym
 
 def main():
     env = gameEnv(size=5,startDelay=2)
@@ -78,13 +79,15 @@ class gameEnv():
         class ActionSpace():
             def __init__(self):
                 self.n = 4
+            def sample(self):
+                return gym.spaces.np_random.randint(self.n)
         class ObservationSpace():
             def __init__(self,dim=5):
-                self.n = dim*dim
+                self.n = (dim+2)*(dim+2) * 3
 
         self.vis = visdom.Visdom()
         self.action_space = ActionSpace()
-        self.observation_space = ObservationSpace()
+        self.observation_space = ObservationSpace(dim=size)
         self.sizeX = size
         self.sizeY = size
         self.actions = 4
@@ -222,6 +225,7 @@ class gameEnv():
     def checkGoal(self):
         others = []
         negative_reward = -1
+        positive_reward = 20
 
         for obj in self.objects:
             if obj.name == 'hero':
@@ -237,7 +241,10 @@ class gameEnv():
                 #     self.objects.append(self.createHole())
                 # check if game ended
                 if len(self.objects) == 1:
-                    return int(self.isSequenceFollowed),True
+                    if self.isSequenceFollowed:
+                        return positive_reward,True
+                    else:
+                        return 0,True
                 else:
                     return negative_reward,False
         return negative_reward,False
