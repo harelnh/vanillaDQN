@@ -88,7 +88,7 @@ class gameEnv():
                 return gym.spaces.np_random.randint(self.n)
         class ObservationSpace():
             def __init__(self,dim=5):
-                self.n = (dim+2)*(dim+2) * 3
+                self.n = (dim)*(dim) * 3
 
         self.vis = visdom.Visdom()
         self.action_space = ActionSpace()
@@ -251,6 +251,10 @@ class gameEnv():
         return points[location]
 
     def checkGoal(self):
+        # game pre-start
+        if self.startDelay > 0:
+            return 0,False
+        # rest of the game
         others = []
         negative_reward = -1
         positive_reward = 20
@@ -280,11 +284,10 @@ class gameEnv():
 
     def renderEnv(self):
         # a = np.zeros([self.sizeY,self.sizeX,3])
-        a = np.ones([self.sizeY + 2, self.sizeX + 2, 3])
-        a[1:-1, 1:-1, :] = 0
+        a = np.zeros([self.sizeY, self.sizeX, 3])
         hero = None
         for item in self.objects:
-            a[item.y + 1:item.y + item.size + 1, item.x + 1:item.x + item.size + 1, item.channel] = item.intensity
+            a[item.y:item.y + item.size, item.x:item.x + item.size, item.channel] = item.intensity
             if item.name == 'hero':
                 hero = item
         if self.partial > 0:

@@ -79,7 +79,13 @@ for step in range(num_steps):
         action = network(state).max(1)[1].item()
     eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
     if random.random() < eps:
-        action = env.action_space.sample()
+        if env.startDelay >= 0:
+            # game pre-start
+            action = gym.spaces.np_random.randint(env.action_space.n)
+        else:
+            # rest of the game
+            actions = env.getValidActions()
+            action = actions[gym.spaces.np_random.randint(len(actions))]
 
     if is_chen:
         next_state_idx, reward, done, _ = env.step(action)
@@ -91,6 +97,8 @@ for step in range(num_steps):
         next_state = torch.from_numpy(next_state)
         dtype = torch.float32
         next_state = Variable(next_state.type(dtype))
+    # after we made a step render it to visualize
+    env.render()
 
     # Done due to timeout is a non-markovian property. This is an artifact which we would not like to learn from.
     if not (done and reward < 0):
