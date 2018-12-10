@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 import visdom
 import gym
 
+UP_ACTION = 0
+DOWN_ACTION = 1
+LEFT_ACTION = 2
+RIGHT_ACTION = 3
+
 def main():
     env = gameEnv(size=5,startDelay=2)
     # game main loop
@@ -110,6 +115,29 @@ class gameEnv():
 
     def seed(self,seedNum):
          np.random.seed(seedNum)
+
+    def getValidActions(self):
+        # find hero object
+        hero = None
+        for item in self.objects:
+            if item.name == 'hero':
+                hero = item
+        # first give all actions
+        actions = [UP_ACTION,DOWN_ACTION,LEFT_ACTION,RIGHT_ACTION];
+        # remove unrelevant actions if hero adjacent to wall
+        # whereas top left is x=0,y=0
+        if hero.x == 0:
+            actions = [action for action in actions if action != LEFT_ACTION];
+        if hero.y == 0:
+            actions = [action for action in actions if action != UP_ACTION];
+        if hero.x == self.sizeX-1:
+            actions = [action for action in actions if action != RIGHT_ACTION];
+        if hero.y == self.sizeY-1:
+            actions = [action for action in actions if action != DOWN_ACTION];
+
+        # return valid actions
+        return actions
+
 
     def isPositionTaken(self,x,y,objects=None):
         if objects == None:
