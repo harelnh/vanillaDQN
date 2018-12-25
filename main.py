@@ -37,7 +37,7 @@ double_dqn = False
 gamma = 0.99
 num_steps = 50000
 target_update_freq = 500
-learn_start = 10000
+learn_start = 1500
 eval_freq = 300
 eval_episodes = 10
 eps_decay = 1000
@@ -76,7 +76,14 @@ for step in range(num_steps):
     if is_chen:
         action = network(state.unsqueeze(0)).max(1)[1].item()
     else:
-        action = network(state).max(1)[1].item()
+        if env.startDelay >= 0:
+            # game pre-start
+            action = gym.spaces.np_random.randint(env.action_space.n)
+        else:
+            validActions = env.getValidActions()
+            actionScores = network(state).detach().numpy().squeeze()
+            actionScores = [actionScores[i] for i in validActions]
+            action = validActions[np.asarray(actionScores).argmax()]
     eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
     if random.random() < eps:
         if env.startDelay >= 0:
@@ -159,7 +166,15 @@ for step in range(num_steps):
                     eval_state = torch.from_numpy(eval_state)
                     dtype = torch.float32
                     eval_state = Variable(eval_state.type(dtype))
-                    action = network(state).max(1)[1].item()
+                    # action = network(state).max(1)[1].item()
+                    if eval_env.startDelay >= 0:
+                        # game pre-start
+                        action = gym.spaces.np_random.randint(env.action_space.n)
+                    else:
+                        validActions = eval_env.getValidActions()
+                        actionScores = network(eval_state).detach().numpy().squeeze()
+                        actionScores = [actionScores[i] for i in validActions]
+                        action = validActions[np.asarray(actionScores).argmax()]
                 if random.random() < 0.01:
                     action = random.randrange(output_size)
                 if is_chen:

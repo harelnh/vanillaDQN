@@ -107,7 +107,8 @@ class gameEnv():
         self.penalty = 0
         self.score = 0
         self.numOfSteps = 0
-        self.MaxNumOfStepsPerGame = self.sizeX*self.sizeY*10
+        # self.MaxNumOfStepsPerGame = self.sizeX*self.sizeY*10
+        self.MaxNumOfStepsPerGame = 15
         self.startDelay = self.startDelayConst
         self.objects = []
         #prepare first time for play
