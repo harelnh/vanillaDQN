@@ -37,7 +37,7 @@ batch = 256
 lr = 0.01
 double_dqn = False
 gamma = 0.99
-num_steps = 50000
+num_steps = 500000
 target_update_freq = 500
 learn_start = 1500
 eval_freq = 300
@@ -48,9 +48,14 @@ hidden_layer = 50
 l1_regularization = 0
 dropout = 0
 
-network = DQN_MLP(input_size, output_size, hidden_layer)
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+else:
+    device = torch.device('cpu')
+
+network = DQN_MLP(input_size, output_size, hidden_layer).to(device)
 network.apply(init_weights)
-target_network = DQN_MLP(input_size, output_size, hidden_layer)
+target_network = DQN_MLP(input_size, output_size, hidden_layer).to(device)
 target_network.load_state_dict(network.state_dict())
 memory = ReplayBuffer(mem_capacity)
 
@@ -72,18 +77,18 @@ for step in range(num_steps):
         else:
             state = env.reset()
             state = np.reshape(state, (1, -1))
-            state = torch.from_numpy(state)
+            state = torch.from_numpy(state).to(device)
             dtype = torch.float32
-            state = Variable(state.type(dtype))
+            state = Variable(state.type(dtype)).to(device)
     if is_chen:
-        action = network(state.unsqueeze(0)).max(1)[1].item()
+        action = network(state.unsqueeze(0)).cpu().max(1)[1].item()
     else:
         if env.startDelay >= 0:
             # game pre-start
             action = gym.spaces.np_random.randint(env.action_space.n)
         else:
             validActions = env.getValidActions()
-            actionScores = network(state).detach().numpy().squeeze()
+            actionScores = network(state).detach().cpu().numpy().squeeze()
             actionScores = [actionScores[i] for i in validActions]
             action = validActions[np.asarray(actionScores).argmax()]
     eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
@@ -98,12 +103,12 @@ for step in range(num_steps):
 
     if is_chen:
         next_state_idx, reward, done, _ = env.step(action)
-        next_state = torch.zeros([input_size], dtype=torch.float32)
+        next_state = torch.zeros([input_size], dtype=torch.float32).to(device)
         next_state[next_state_idx] = 1
     else:
         next_state, reward, done, _ = env.step(action)
         next_state = np.reshape(next_state, (1, -1))
-        next_state = torch.from_numpy(next_state)
+        next_state = torch.from_numpy(next_state).to(device)
         dtype = torch.float32
         next_state = Variable(next_state.type(dtype))
     # after we made a step render it to visualize
@@ -121,11 +126,11 @@ for step in range(num_steps):
     if step > learn_start:
         batch_state, batch_action, batch_reward, batch_next_state, not_done_mask = memory.sample(batch)
 
-        batch_state = torch.stack(batch_state)
-        batch_next_state = torch.stack(batch_next_state)
-        batch_action = torch.tensor(batch_action, dtype=torch.int64).unsqueeze(-1)
-        batch_reward = torch.tensor(batch_reward, dtype=torch.float32).unsqueeze(-1)
-        not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1)
+        batch_state = torch.stack(batch_state).to(device)
+        batch_next_state = torch.stack(batch_next_state).to(device)
+        batch_action = torch.tensor(batch_action, dtype=torch.int64).unsqueeze(-1).to(device)
+        batch_reward = torch.tensor(batch_reward, dtype=torch.float32).unsqueeze(-1).to(device)
+        not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1).to(device)
 
         current_Q = network(batch_state).gather(1, batch_action)
 
@@ -171,12 +176,12 @@ for step in range(num_steps):
             while True:
                 eval_env.render()
                 if is_chen:
-                    eval_state = torch.zeros([input_size], dtype=torch.float32)
+                    eval_state = torch.zeros([input_size], dtype=torch.float32).to(device)
                     eval_state[eval_state_idx] = 1
                     action = network(eval_state.unsqueeze(0)).max(1)[1].item()
                 else:
                     eval_state = np.reshape(eval_state, (1, -1))
-                    eval_state = torch.from_numpy(eval_state)
+                    eval_state = torch.from_numpy(eval_state).to(device)
                     dtype = torch.float32
                     eval_state = Variable(eval_state.type(dtype))
                     # action = network(state).max(1)[1].item()
@@ -185,7 +190,7 @@ for step in range(num_steps):
                         action = gym.spaces.np_random.randint(env.action_space.n)
                     else:
                         validActions = eval_env.getValidActions()
-                        actionScores = network(eval_state).detach().numpy().squeeze()
+                        actionScores = network(eval_state).detach().cpu().numpy().squeeze()
                         actionScores = [actionScores[i] for i in validActions]
                         action = validActions[np.asarray(actionScores).argmax()]
                 if random.random() < 0.01:
