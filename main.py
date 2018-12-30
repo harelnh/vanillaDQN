@@ -12,6 +12,8 @@ from IPython.display import clear_output
 from DQN import DQN_MLP, ReplayBuffer, init_weights
 from GridWorldSimon import gameEnv
 from torch.autograd import Variable
+import matplotlib.pyplot as plt
+
 
 
 Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done'))
@@ -107,6 +109,10 @@ for step in range(num_steps):
     # after we made a step render it to visualize
     env.render()
 
+    # update plots
+    if env.done:
+        env.updatePlots(is_learn_start=(step > learn_start))
+
     # Done due to timeout is a non-markovian property. This is an artifact which we would not like to learn from.
     if not (done and reward < 0):
         memory.add(state, action, reward, next_state, not done)
@@ -143,6 +149,13 @@ for step in range(num_steps):
         optimizer.step()
         losses.append(loss.item())
         losses_steps.append(step)
+        # # plot losses
+        # plt.figure(4)
+        # plt.plot(losses_steps,losses)
+        # plt.title("Losses")
+        # env.vis.matplot(plt,win=4)
+
+
 
     if step % target_update_freq == 0:
         target_network.load_state_dict(network.state_dict())

@@ -81,6 +81,9 @@ class gameOb():
 
 class gameEnv():
     def __init__(self, partial=0, size=10, fruitNum=0, holeNum=0, startDelay=4):
+        self.numOfSteps_vec = []
+        self.score_vec = []
+
         class ActionSpace():
             def __init__(self):
                 self.n = 4
@@ -108,9 +111,10 @@ class gameEnv():
         self.score = 0
         self.numOfSteps = 0
         # self.MaxNumOfStepsPerGame = self.sizeX*self.sizeY*10
-        self.MaxNumOfStepsPerGame = 15
+        self.MaxNumOfStepsPerGame = 30
         self.startDelay = self.startDelayConst
         self.objects = []
+        self.learn_start_step = 0
         #prepare first time for play
         self.reset()
 
@@ -303,6 +307,7 @@ class gameEnv():
         # pass
         state = self.renderEnv()
         # show curent step
+        plt.figure(1)
         plt.imshow(state, interpolation="nearest")
         plt.title("Score: {0}, Reward: {1}, GameOver: {2}".format(float(self.getScore()), float(self.reward), self.done))
         # plt.draw()
@@ -330,7 +335,12 @@ class gameEnv():
         state = self.renderEnv()
         # check if too many step for game
         self.numOfSteps += 1
+        ## update plot progress if game terminate
+        # if self.done:
+        #     self.updatePlots()
         if self.numOfSteps >= self.MaxNumOfStepsPerGame:
+            # #update plot progress if game terminate
+            # self.updatePlots()
             return state, (self.reward + self.penalty), True, None
         else:
             return state, (self.reward + self.penalty), self.done, None
@@ -346,6 +356,22 @@ class gameEnv():
         itemColor = colorByNum(self.startItems[-self.startDelay])
         item = self.createItem([int(self.sizeX/2),int(self.sizeY/2)],itemColor)
         self.objects.append(item)
+
+    def updatePlots(self, is_learn_start=False):
+        if is_learn_start and self.learn_start_step==0:
+            self.learn_start_step = len(self.score_vec)+1
+        # score plot
+        plt.figure(2)
+        self.score_vec.append(self.score)
+        plt.plot(self.score_vec)
+        plt.title("score progress {}".format(self.learn_start_step))
+        self.vis.matplot(plt,win=2)
+         # num of steps plot
+        plt.figure(3)
+        self.numOfSteps_vec.append(self.numOfSteps)
+        plt.plot(self.numOfSteps_vec)
+        plt.title("num of steps progress")
+        self.vis.matplot(plt,win=3)
 
 
 if __name__ == "__main__":
