@@ -4,6 +4,7 @@ import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
 import gym
+import gym.spaces
 import numpy as np
 from collections import namedtuple
 import random
@@ -24,7 +25,7 @@ if is_chen:
     env = gym.make('Taxi-v2')
     eval_env = gym.make('Taxi-v2')
 else:
-    grid_dim = 3
+    grid_dim = 5
     num_of_obj = 1
     env = gameEnv(size=grid_dim,startDelay=num_of_obj)
     eval_env = gameEnv(size=grid_dim,startDelay=num_of_obj)
@@ -32,21 +33,23 @@ else:
 
 input_size = env.observation_space.n
 output_size = env.action_space.n
-mem_capacity = 20000
-batch = 256
+mem_capacity = 1000000
+batch = 128
 lr = 0.01
 double_dqn = False
 gamma = 0.99
-num_steps = 500000
+num_steps = 1000000
 target_update_freq = 500
 learn_start = 1500
-eval_freq = 300
+plot_update_freq = 100
+eval_freq = 500
 eval_episodes = 10
 eps_decay = 1000
 eps_end = 0.1
 hidden_layer = 50
 l1_regularization = 0
 dropout = 0
+is_visdom = True
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
@@ -59,7 +62,7 @@ target_network = DQN_MLP(input_size, output_size, hidden_layer).to(device)
 target_network.load_state_dict(network.state_dict())
 memory = ReplayBuffer(mem_capacity)
 
-optimizer = optim.Adam(network.parameters(), lr=lr)
+optimizer = optim.Adam(network.parameters(), lr=lr,amsgrad=True)
 
 average_rewards = []
 avg_rew_steps = []
@@ -115,7 +118,7 @@ for step in range(num_steps):
     env.render()
 
     # update plots
-    if env.done:
+    if env.done and step % plot_update_freq == 0 and is_visdom:
         env.updatePlots(is_learn_start=(step > learn_start))
 
     # Done due to timeout is a non-markovian property. This is an artifact which we would not like to learn from.
@@ -140,12 +143,17 @@ for step in range(num_steps):
                 next_Q = target_network(batch_next_state).gather(1, next_state_actions)
             else:
                 next_Q = target_network(batch_next_state).max(1, keepdim=True)[0]
+
             target_Q = batch_reward + (gamma * next_Q) * not_done_mask
 
         loss = F.smooth_l1_loss(current_Q, target_Q)
         # all_params = torch.cat([x.view(-1) for x in model.parameters()])
         all_params = torch.cat([x.view(-1) for x in network.parameters()]) # TODO - ask chen why it was model and if its really should be network
         loss += l1_regularization * torch.norm(all_params, 1)
+        loss = torch.clamp(loss, min=-1, max=1)
+
+        if step % plot_update_freq == 0:
+            print('loss is: %f' % loss)
 
         optimizer.zero_grad()
         loss.backward()
@@ -163,6 +171,7 @@ for step in range(num_steps):
 
 
     if step % target_update_freq == 0:
+        print('target network update')
         target_network.load_state_dict(network.state_dict())
 
     if step % eval_freq == 0 and step > learn_start:
@@ -209,15 +218,14 @@ for step in range(num_steps):
         average_rewards.append(average_reward)
         avg_rew_steps.append(step)
         print('Step: ' + str(step) + ' Avg reward: ' + str(average_reward))
-
-    if step > learn_start and len(losses) > 0 and len(average_rewards) > 0 and step % 1000 == 0:
-        clear_output()
-        pl.plot(losses_steps, losses)
-        pl.title('Loss')
-        pl.show()
-        pl.plot(avg_rew_steps, average_rewards)
-        pl.title('Reward')
-        pl.show()
+    # if step > learn_start and len(losses) > 0 and len(average_rewards) > 0 and step % 1000 == 0:
+    #     clear_output()
+    #     pl.plot(losses_steps, losses)
+    #     pl.title('Loss')
+    #     pl.show()
+    #     pl.plot(avg_rew_steps, average_rewards)
+    #     pl.title('Reward')
+    #     pl.show()
 
 
 torch.save(network.state_dict(), 'dqn')

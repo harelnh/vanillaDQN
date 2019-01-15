@@ -315,6 +315,7 @@ class gameEnv():
         self.vis.matplot(plt,win=1)
         # self.vis.text("Score: {0}, Reward: {1}, GameOver: {2}".format(float(self.getScore()), float(self.reward), self.done))
         # plt.hold(True)
+        s=0
 
     def step(self, action):
         # game pre-start
