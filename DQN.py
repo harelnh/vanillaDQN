@@ -13,12 +13,23 @@ Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state'
 
 
 class DQN_MLP(nn.Module):
-    def __init__(self, in_size, out_size, hidden_size, dropout_prob=0):
+    def __init__(self, in_size, out_size, hidden_size, dropout_prob=0,seed = None):
         super().__init__()
+
+        if not seed == None:
+            random.seed(seed)
+        # original architecture
         self.lin1 = nn.Linear(in_size, hidden_size)
         self.dropout1 = nn.Dropout(dropout_prob)
         self.lin2 = nn.Linear(hidden_size, out_size)
         self.dropout2 = nn.Dropout(dropout_prob)
+        # omri & harel cnn architecture
+        # self.conv1 = nn.Conv2d(3,32,kernel_size=3)
+        # self.conv2 = nn.Conv2d(32,64,kernel_size=3)
+        # self.conv3 = nn.Conv2d(64,64,kernel_size=3)
+        # self.fc1 = nn.Linear()
+
+
 
     def forward(self, x):
         x = x.view(x.size(0), -1)
