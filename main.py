@@ -2,15 +2,15 @@ import train
 import os
 import copy
 
-base_dir = os.path.abspath('results')
+base_dir = os.path.abspath('results_2_fruit')
 if not os.path.exists(base_dir):
     os.mkdir(base_dir)
 
 # these are our default params.
 kwargs = {
     'grid_dim': 3,
-    'num_of_obj': 1,
-    'mem_capacity': 1000000,
+    'num_of_obj': 2,
+    'mem_capacity': 100000,
     'batch' : 128,
     'lr' : 0.001,
     'double_dqn' : False,
@@ -31,9 +31,7 @@ kwargs = {
     'write_mode' : 'w',
 }
 
-
-
-is_run_grid_search =  False
+is_run_grid_search =  True
 is_run_best_results = True
 
 if is_run_best_results:

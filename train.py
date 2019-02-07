@@ -22,17 +22,13 @@ def run_train_session(**kwargs):
 
     random.seed(3)
     Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done'))
-    is_chen = False
     # is_chen = True
     #
-    if is_chen:
-        env = gym.make('Taxi-v2')
-        eval_env = gym.make('Taxi-v2')
-    else:
-        grid_dim = kwargs['grid_dim']
-        num_of_obj = kwargs['num_of_obj']
-        env = gameEnv(size=grid_dim,startDelay=num_of_obj)
-        eval_env = gameEnv(size=grid_dim,startDelay=num_of_obj)
+
+    grid_dim = kwargs['grid_dim']
+    num_of_obj = kwargs['num_of_obj']
+    env = gameEnv(size=grid_dim,startDelay=num_of_obj)
+    eval_env = gameEnv(size=grid_dim,startDelay=num_of_obj)
 
 
     input_size = env.observation_space.n
@@ -80,19 +76,11 @@ def run_train_session(**kwargs):
     for step in range(num_steps):
 
         if done:
-            if is_chen:
-                state_idx = env.reset()
-                state = torch.zeros([input_size], dtype=torch.float32)
-                state[state_idx] = 1
-            else:
-                state = env.reset()
-                state = np.reshape(state, (1, -1))
-                state = torch.from_numpy(state).to(device)
-                dtype = torch.float32
-                state = Variable(state.type(dtype)).to(device)
-        if is_chen:
-            action = network(state.unsqueeze(0)).cpu().max(1)[1].item()
-        else:
+            state = env.reset()
+            state = np.reshape(state, (1, -1))
+            state = torch.from_numpy(state).to(device)
+            dtype = torch.float32
+            state = Variable(state.type(dtype)).to(device)
             if env.startDelay >= 0:
                 # game pre-start
                 action = random.randint(0,env.action_space.n-1)
@@ -111,17 +99,13 @@ def run_train_session(**kwargs):
                 actions = env.getValidActions()
                 action = actions[random.randint(0,len(actions)-1)]
 
-        if is_chen:
-            next_state_idx, reward, done, _ = env.step(action)
-            next_state = torch.zeros([input_size], dtype=torch.float32).to(device)
-            next_state[next_state_idx] = 1
-        else:
-            next_state, reward, done, _ = env.step(action)
-            # for the convolutional architecture, we keep it in the original shape
-            next_state = np.reshape(next_state, (1, -1))
-            next_state = torch.from_numpy(next_state).to(device)
-            dtype = torch.float32
-            next_state = Variable(next_state.type(dtype))
+
+        next_state, reward, done, _ = env.step(action)
+        # for the convolutional architecture, we keep it in the original shape
+        next_state = np.reshape(next_state, (1, -1))
+        next_state = torch.from_numpy(next_state).to(device)
+        dtype = torch.float32
+        next_state = Variable(next_state.type(dtype))
         # after we made a step render it to visualize
         if is_visdom:
             env.render()
@@ -187,37 +171,28 @@ def run_train_session(**kwargs):
             network.eval()
             total_reward = 0
             for eval_ep in range(eval_episodes):
-                if is_chen:
-                    eval_state_idx = eval_env.reset()
-                else:
-                    eval_state = eval_env.reset()
+
+                eval_state = eval_env.reset()
                 while True:
                     if is_visdom:
                         eval_env.render()
-                    if is_chen:
-                        eval_state = torch.zeros([input_size], dtype=torch.float32).to(device)
-                        eval_state[eval_state_idx] = 1
-                        action = network(eval_state.unsqueeze(0)).max(1)[1].item()
+                    eval_state = np.reshape(eval_state, (1, -1))
+                    eval_state = torch.from_numpy(eval_state).to(device)
+                    dtype = torch.float32
+                    eval_state = Variable(eval_state.type(dtype))
+                    # action = network(state).max(1)[1].item()
+                    if eval_env.startDelay >= 0:
+                        # game pre-start
+                        action = random.randint(0,env.action_space.n-1)
                     else:
-                        eval_state = np.reshape(eval_state, (1, -1))
-                        eval_state = torch.from_numpy(eval_state).to(device)
-                        dtype = torch.float32
-                        eval_state = Variable(eval_state.type(dtype))
-                        # action = network(state).max(1)[1].item()
-                        if eval_env.startDelay >= 0:
-                            # game pre-start
-                            action = random.randint(0,env.action_space.n-1)
-                        else:
-                            validActions = eval_env.getValidActions()
-                            actionScores = network(eval_state).detach().cpu().numpy().squeeze()
-                            actionScores = [actionScores[i] for i in validActions]
-                            action = validActions[np.asarray(actionScores).argmax()]
+                        validActions = eval_env.getValidActions()
+                        actionScores = network(eval_state).detach().cpu().numpy().squeeze()
+                        actionScores = [actionScores[i] for i in validActions]
+                        action = validActions[np.asarray(actionScores).argmax()]
                     if random.random() < 0.01:
                         action = random.randrange(output_size)
-                    if is_chen:
-                        eval_state_idx, reward, done, _ = eval_env.step(action)
-                    else:
-                        eval_state, reward, done, _ = eval_env.step(action)
+
+                    eval_state, reward, done, _ = eval_env.step(action)
 
                     total_reward += reward
                     if done:

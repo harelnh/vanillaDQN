@@ -4,6 +4,7 @@ import scipy.misc
 import matplotlib.pyplot as plt
 import visdom
 import gym
+import time
 
 UP_ACTION = 0
 DOWN_ACTION = 1
