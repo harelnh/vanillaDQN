@@ -36,10 +36,13 @@ class DQN_MLP(nn.Module):
         return self.dropout2(self.lin2(x))
 
 class ReplayBuffer:
-    def __init__(self, capacity):
+    def __init__(self, capacity, full_episodes_capacity = 1000):
         self.capacity = capacity
+        self.full_episodes_capacity = full_episodes_capacity
         self.memory = []
+        self.full_episodes_memory = []
         self.position = 0
+        self.full_episodes_position = 0
 
     def add(self, *args):
         if len(self.memory) < self.capacity:
@@ -47,11 +50,21 @@ class ReplayBuffer:
         self.memory[self.position] = Transition(*args)
         self.position = (self.position + 1) % self.capacity
 
+    def add_episode(self, episode):
+        if len(self.full_episodes_memory) < self.full_episodes_capacity:
+            self.full_episodes_memory.append(None)
+        self.full_episodes_memory[self.full_episodes_position]  = episode
+        self.full_episodes_position = (self.full_episodes_position + 1) % self.full_episodes_capacity
+
     def sample(self, batch_size):
         mem_size = len(self.memory)
         batch = random.sample(self.memory, batch_size)
         batch_state, batch_action, batch_reward, batch_next_state, batch_done = zip(*batch)
         return batch_state, batch_action, batch_reward, batch_next_state, batch_done
+
+    def sample_episode(self, batch_size):
+        sampled_episode = random.sample(self.full_episodes_memory, 1)
+        return sampled_episode
 
     def __len__(self):
         return len(self.memory)
