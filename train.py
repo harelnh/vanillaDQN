@@ -11,6 +11,7 @@ import random
 from matplotlib import pyplot as pl
 from IPython.display import clear_output
 from DQN import DQN_MLP, ReplayBuffer, init_weights
+from DRQN import DRQN, ReplayBuffer, init_weights
 from GridWorldSimon import gameEnv
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
@@ -42,7 +43,9 @@ def train_drqn_sequential_updates(**kwargs):
     eval_episodes = kwargs['eval_episodes']
     eps_decay = kwargs['eps_decay']
     eps_end = kwargs['eps_end']
-    hidden_layer = kwargs['hidden_layer']
+    inner_linear_dim = kwargs['inner_linear_dim']
+    hidden_dim = kwargs['hidden_dim']
+    lstm_layers = kwargs['lstm_layers']
     l1_regularization = kwargs['l1_regularization']
     dropout = kwargs['dropout']
     is_visdom = kwargs['is_visdom']
@@ -55,9 +58,9 @@ def train_drqn_sequential_updates(**kwargs):
 
     f = open(kwargs['output_dir'], write_mode)
 
-    network = DQN_MLP(input_size, output_size, hidden_layer, seed=3).to(device)
+    network = DRQN(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers, seed=3).to(device)
     network.apply(init_weights)
-    target_network = DQN_MLP(input_size, output_size, hidden_layer, seed=3).to(device)
+    target_network = DRQN(input_size, output_size, inner_linear_dim, seed=3).to(device)
     target_network.load_state_dict(network.state_dict())
     memory = ReplayBuffer(mem_capacity)
 
@@ -69,6 +72,8 @@ def train_drqn_sequential_updates(**kwargs):
     losses_steps = []
     episode_transitions = []
     done = True
+    hidden = torch.zeros(hidden_dim, dtype=torch.float64).to(device)
+
     for step in range(num_steps):
 
 
@@ -83,9 +88,12 @@ def train_drqn_sequential_updates(**kwargs):
             if env.startDelay >= 0:
                 # game pre-start
                 action = random.randint(0, env.action_space.n - 1)
+                hidden = torch.zeros(hidden_dim,dtype=torch.float64).to(device)
+
             else:
                 validActions = env.getValidActions()
-                actionScores = network(state).detach().cpu().numpy().squeeze()
+                actionScores, hidden = network(state,hidden)
+                actionScores = actionScores.detach().cpu().numpy().squeeze()
                 actionScores = [actionScores[i] for i in validActions]
                 action = validActions[np.asarray(actionScores).argmax()]
         eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
@@ -120,7 +128,7 @@ def train_drqn_sequential_updates(**kwargs):
         state = next_state
 
         if step > learn_start:
-            batch_state, batch_action, batch_reward, batch_next_state, not_done_mask = memory.sample(batch)
+            episode_transitions_sample = memory.sample_episode()
 
             batch_state = torch.stack(batch_state).to(device)
             batch_next_state = torch.stack(batch_next_state).to(device)
@@ -248,7 +256,7 @@ def train_vannila_dqn(**kwargs):
     eval_episodes = kwargs['eval_episodes']
     eps_decay = kwargs['eps_decay']
     eps_end = kwargs['eps_end']
-    hidden_layer = kwargs['hidden_layer']
+    inner_linear_dim = kwargs['inner_linear_dim']
     l1_regularization = kwargs['l1_regularization']
     dropout = kwargs['dropout']
     is_visdom = kwargs['is_visdom']
@@ -261,9 +269,9 @@ def train_vannila_dqn(**kwargs):
 
     f = open(kwargs['output_dir'], write_mode)
 
-    network = DQN_MLP(input_size, output_size, hidden_layer,seed=3).to(device)
+    network = DQN_MLP(input_size, output_size, inner_linear_dim,seed=3).to(device)
     network.apply(init_weights)
-    target_network = DQN_MLP(input_size, output_size, hidden_layer, seed=3).to(device)
+    target_network = DQN_MLP(input_size, output_size, inner_linear_dim, seed=3).to(device)
     target_network.load_state_dict(network.state_dict())
     memory = ReplayBuffer(mem_capacity)
 

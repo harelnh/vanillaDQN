@@ -23,7 +23,7 @@ kwargs = {
     'eval_episodes' : 10,
     'eps_decay' : 1000,
     'eps_end' : 0.1,
-    'hidden_layer' : 100,
+    'inner_linear_dim' : 100,
     'l1_regularization': 0,
     'dropout' : 0,
     'is_visdom' : False,
@@ -31,8 +31,18 @@ kwargs = {
     'write_mode' : 'w',
 }
 
-is_run_grid_search =  True
-is_run_best_results = True
+
+output_dir = os.path.abspath('seqential_sampling')
+cur_kwargs = copy.deepcopy(kwargs)
+cur_kwargs['output_dir'] = output_dir
+cur_kwargs['hidden_dim'] = 128
+cur_kwargs['lstm_layers'] = 30
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
+result = train.train_drqn_sequential_updates(cur_kwargs)
+
+is_run_grid_search =  False
+is_run_best_results = False
 
 if is_run_best_results:
     cur_kwargs = copy.deepcopy(kwargs)
