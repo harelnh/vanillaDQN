@@ -18,15 +18,18 @@ import matplotlib.pyplot as plt
 
 random.seed(3)
 
-def train_drqn_sequential_updates(**kwargs):
+
+def train_drqn_sequential(**kwargs):
+
+
     random.seed(3)
-    Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done'))
 
 
     grid_dim = kwargs['grid_dim']
     num_of_obj = kwargs['num_of_obj']
-    env = gameEnv(size=grid_dim, startDelay=num_of_obj)
-    eval_env = gameEnv(size=grid_dim, startDelay=num_of_obj)
+    maxSteps = kwargs['maxSteps']
+    env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps)
+    eval_env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps)
 
     input_size = env.observation_space.n
     output_size = env.action_space.n
@@ -56,11 +59,26 @@ def train_drqn_sequential_updates(**kwargs):
     else:
         device = torch.device('cpu')
 
-    f = open(kwargs['output_dir'], write_mode)
 
-    network = DRQN(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers, seed=3).to(device)
+
+
+    Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done','pad_mask'))
+
+    def pad_episode(episode_transitions, max_steps):
+
+        zero_transition = Transition(torch.zeros(episode_transitions[0][0].shape).to(device),
+                                     0, 0, torch.zeros(episode_transitions[0][0].shape).to(device), 0, 0)
+
+        for i in range(batch - len(episode_transitions)):
+            episode_transitions.append(zero_transition)
+        return episode_transitions
+
+
+    f = open(kwargs['output_path'], write_mode)
+
+    network = DRQN(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers,batch, seed=3, device = device).to(device)
     network.apply(init_weights)
-    target_network = DRQN(input_size, output_size, inner_linear_dim, seed=3).to(device)
+    target_network = DRQN(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,batch, seed=3,device = device).to(device)
     target_network.load_state_dict(network.state_dict())
     memory = ReplayBuffer(mem_capacity)
 
@@ -72,13 +90,14 @@ def train_drqn_sequential_updates(**kwargs):
     losses_steps = []
     episode_transitions = []
     done = True
-    hidden = torch.zeros(hidden_dim, dtype=torch.float64).to(device)
 
     for step in range(num_steps):
 
 
         if done:
-            memory.add_episode(episode_transitions)
+            if len(episode_transitions) > 0:
+                episode_transitions = pad_episode(episode_transitions,maxSteps)
+                memory.add_episode(episode_transitions)
             episode_transitions = []
             state = env.reset()
             state = np.reshape(state, (1, -1))
@@ -88,7 +107,6 @@ def train_drqn_sequential_updates(**kwargs):
             if env.startDelay >= 0:
                 # game pre-start
                 action = random.randint(0, env.action_space.n - 1)
-                hidden = torch.zeros(hidden_dim,dtype=torch.float64).to(device)
 
             else:
                 validActions = env.getValidActions()
@@ -123,44 +141,49 @@ def train_drqn_sequential_updates(**kwargs):
         # Done due to timeout is a non-markovian property. This is an artifact which we would not like to learn from.
         if not (done and reward < 0):
             # memory.add(state, action, reward, next_state, not done)
-            episode_transitions.append(Transition(state, action, reward, next_state, not done))
+            episode_transitions.append(Transition(state, action, reward, next_state, not done, 1))
 
         state = next_state
 
         if step > learn_start:
-            episode_transitions_sample = memory.sample_episode()
+            network.hidden = network.init_hidden()
+            target_network.hidden = target_network.init_hidden()
+            optimizer.zero_grad()
+
+
+            batch_state, batch_action, batch_reward, batch_next_state, not_done_mask, is_pad_mask = memory.sample_episode()
 
             batch_state = torch.stack(batch_state).to(device)
             batch_next_state = torch.stack(batch_next_state).to(device)
             batch_action = torch.tensor(batch_action, dtype=torch.int64).unsqueeze(-1).to(device)
             batch_reward = torch.tensor(batch_reward, dtype=torch.float32).unsqueeze(-1).to(device)
             not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1).to(device)
+            is_pad_mask = torch.tensor(is_pad_mask, dtype=torch.float32).unsqueeze(-1).to(device)
 
-            current_Q = network(batch_state).gather(1, batch_action)
+            current_Q = network(batch_state).view(maxSteps,-1).gather(1, batch_action) * is_pad_mask
 
-            
+
 
             with torch.no_grad():
                 if double_dqn:
                     next_state_actions = network(batch_next_state).max(1, keepdim=True)[1]
                     next_Q = target_network(batch_next_state).gather(1, next_state_actions)
                 else:
-                    next_Q = target_network(batch_next_state).max(1, keepdim=True)[0]
+                    next_Q = target_network(batch_next_state).view(maxSteps,-1).max(1, keepdim=True)[0]
 
-                target_Q = batch_reward + (gamma * next_Q) * not_done_mask
+                target_Q = batch_reward + (gamma * next_Q) * not_done_mask * is_pad_mask
 
             loss = F.smooth_l1_loss(current_Q, target_Q)
             # all_params = torch.cat([x.view(-1) for x in model.parameters()])
             all_params = torch.cat([x.view(-1) for x in
-                                    network.parameters()])  # TODO - ask chen why it was model and if its really should be network
+                                    network.parameters()])
             loss += l1_regularization * torch.norm(all_params, 1)
             loss = torch.clamp(loss, min=-1, max=1)
 
             if step % plot_update_freq == 0:
                 print('loss is: %f' % loss)
 
-            optimizer.zero_grad()
-            loss.backward()
+            loss.backward(retain_graph = True)
             #         for param in network.parameters():
             #             param.grad.data.clamp_(-1, 1)
             optimizer.step()
@@ -237,8 +260,9 @@ def train_vannila_dqn(**kwargs):
 
     grid_dim = kwargs['grid_dim']
     num_of_obj = kwargs['num_of_obj']
-    env = gameEnv(size=grid_dim,startDelay=num_of_obj)
-    eval_env = gameEnv(size=grid_dim,startDelay=num_of_obj)
+    maxSteps = kwargs['maxSteps']
+    env = gameEnv(size=grid_dim,startDelay=num_of_obj, maxSteps=maxSteps)
+    eval_env = gameEnv(size=grid_dim,startDelay=num_of_obj, maxSteps=maxSteps)
 
 
     input_size = env.observation_space.n
@@ -267,7 +291,7 @@ def train_vannila_dqn(**kwargs):
     else:
         device = torch.device('cpu')
 
-    f = open(kwargs['output_dir'], write_mode)
+    f = open(kwargs['output_path'], write_mode)
 
     network = DQN_MLP(input_size, output_size, inner_linear_dim,seed=3).to(device)
     network.apply(init_weights)
@@ -330,15 +354,15 @@ def train_vannila_dqn(**kwargs):
         state = next_state
 
         if step > learn_start:
-            batch_state, batch_action, batch_reward, batch_next_state, not_done_mask = memory.sample(batch)
 
+            batch_state, batch_action, batch_reward, batch_next_state, not_done_mask = memory.sample(batch)
             batch_state = torch.stack(batch_state).to(device)
             batch_next_state = torch.stack(batch_next_state).to(device)
             batch_action = torch.tensor(batch_action, dtype=torch.int64).unsqueeze(-1).to(device)
             batch_reward = torch.tensor(batch_reward, dtype=torch.float32).unsqueeze(-1).to(device)
             not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1).to(device)
-
-            current_Q = network(batch_state).gather(1, batch_action)
+            tmp = network(batch_state)
+            current_Q = tmp.gather(1, batch_action)
 
             with torch.no_grad():
                 if double_dqn:

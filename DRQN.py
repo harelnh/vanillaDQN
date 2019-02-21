@@ -12,15 +12,22 @@ Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state'
 
 
 class DRQN(nn.Module):
-    def __init__(self, in_size, out_size, inner_linear_dim,hidden_dim,lstm_layers, dropout_prob=0,seed = None):
+    def __init__(self, in_size, out_size, inner_linear_dim,hidden_dim,lstm_layers,batch=32,
+                 dropout_prob=0, seed = None, device = torch.device('cpu')):
         super().__init__()
 
         if not seed == None:
             random.seed(seed)
         # original architecture
+        self.hidden_dim = hidden_dim
+        self.batch = batch
+        self.lstm_layers = lstm_layers
+        self.device = device
+        self.hidden = self.init_hidden()
+
         self.lin1 = nn.Linear(in_size, inner_linear_dim)
         self.dropout1 = nn.Dropout(dropout_prob)
-        self.rnn = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers,batch_first=True, dropout=dropout_prob,bidirectional=False)
+        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers,batch_first=True, dropout=dropout_prob,bidirectional=False)
         self.lin2 = nn.Linear(hidden_dim, out_size)
         self.dropout2 = nn.Dropout(dropout_prob)
         # omri & harel cnn architecture
@@ -31,11 +38,19 @@ class DRQN(nn.Module):
 
 
 
-    def forward(self, x, hidden):
-        x = x.view(x.size(0), -1)
+    def forward(self, x):
+        x = x.view(x.size(0),1, -1)
         x = self.dropout1(F.relu(self.lin1(x)))
-        output, hidden = self.rnn(x, hidden)
-        return self.dropout2(output)
+        output, self.hidden = self.lstm_layer(x, self.hidden)
+        return self.lin2(F.relu(output))
+
+    def init_hidden(self):
+        # Before we've done anything, we dont have any hidden state.
+        # Refer to the Pytorch documentation to see exactly
+        # why they have this dimensionality.
+        # The axes semantics are (num_layers, minibatch_size, hidden_dim)
+        return (torch.zeros(self.lstm_layers, self.batch, self.hidden_dim).to(self.device),
+         torch.zeros(self.lstm_layers, self.batch, self.hidden_dim).to(self.device))
 
 class ReplayBuffer:
     def __init__(self, capacity, full_episodes_capacity = 1000):
@@ -64,9 +79,10 @@ class ReplayBuffer:
         batch_state, batch_action, batch_reward, batch_next_state, batch_done = zip(*batch)
         return batch_state, batch_action, batch_reward, batch_next_state, batch_done
 
-    def sample_episode(self, batch_size=1):
-        sampled_episode = random.sample(self.full_episodes_memory, batch_size)
-        return sampled_episode
+    def sample_episode(self):
+        episode = random.sample(self.full_episodes_memory, 1)[0]
+        batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad = zip(*episode)
+        return batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad
 
     def __len__(self):
         return len(self.memory)
@@ -87,3 +103,4 @@ def init_weights(m):
         w_bound = np.sqrt(6. / (fan_in + fan_out))
         m.weight.data.uniform_(-w_bound, w_bound)
         m.bias.data.fill_(0)
+

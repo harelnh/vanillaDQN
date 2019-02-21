@@ -81,7 +81,7 @@ class gameOb():
         self.name = name
 
 class gameEnv():
-    def __init__(self, partial=0, size=10, fruitNum=0, holeNum=0, startDelay=4):
+    def __init__(self, partial=0, size=10, fruitNum=0, holeNum=0, startDelay=4, maxSteps = 30):
         self.numOfSteps_vec = []
         self.score_vec = []
 
@@ -112,7 +112,7 @@ class gameEnv():
         self.score = 0
         self.numOfSteps = 0
         # self.MaxNumOfStepsPerGame = self.sizeX*self.sizeY*10
-        self.MaxNumOfStepsPerGame = 30
+        self.maxSteps = maxSteps
         self.startDelay = self.startDelayConst
         self.objects = []
         self.learn_start_step = 0
@@ -340,7 +340,7 @@ class gameEnv():
         ## update plot progress if game terminate
         # if self.done:
         #     self.updatePlots()
-        if self.numOfSteps >= self.MaxNumOfStepsPerGame:
+        if self.numOfSteps >= self.maxSteps:
             # #update plot progress if game terminate
             # self.updatePlots()
             return state, (self.reward + self.penalty), True, None
