@@ -36,7 +36,11 @@ class DRQN(nn.Module):
         # self.conv3 = nn.Conv2d(64,64,kernel_size=3)
         # self.fc1 = nn.Linear()
 
-
+    def forward_batch(self,batch_state):
+        batch_Q = torch.tensor([]).to(self.device)
+        for state in batch_state:
+            batch_Q = torch.cat((batch_Q, self.forward(state)))
+        return batch_Q
 
     def forward(self, x):
         x = x.view(x.size(0),1, -1)

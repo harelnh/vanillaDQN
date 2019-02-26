@@ -33,7 +33,7 @@ kwargs = {
     'l1_regularization': 0,
     'dropout' : 0,
     'maxSteps' : 30,
-    'is_visdom' : False,
+    'is_visdom' : True,
     'output_path' : base_dir,
     'write_mode' : 'w',
 }
@@ -47,7 +47,7 @@ if is_run_drqn:
     cur_kwargs['output_path'] = output_path
     cur_kwargs['hidden_dim'] = 128
     cur_kwargs['lstm_layers'] = 10
-    cur_kwargs['batch'] = 32
+    cur_kwargs['batch'] = 1
 
     result = train.train_drqn_sequential(**cur_kwargs)
 

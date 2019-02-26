@@ -28,8 +28,8 @@ def train_drqn_sequential(**kwargs):
     grid_dim = kwargs['grid_dim']
     num_of_obj = kwargs['num_of_obj']
     maxSteps = kwargs['maxSteps']
-    env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps)
-    eval_env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps)
+    env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps-2)
+    eval_env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps-2)
 
     input_size = env.observation_space.n
     output_size = env.action_space.n
@@ -64,12 +64,12 @@ def train_drqn_sequential(**kwargs):
 
     Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done','pad_mask'))
 
-    def pad_episode(episode_transitions, max_steps):
+    def pad_episode(episode_transitions):
 
         zero_transition = Transition(torch.zeros(episode_transitions[0][0].shape).to(device),
                                      0, 0, torch.zeros(episode_transitions[0][0].shape).to(device), 0, 0)
 
-        for i in range(batch - len(episode_transitions)):
+        for i in range(maxSteps - len(episode_transitions)):
             episode_transitions.append(zero_transition)
         return episode_transitions
 
@@ -96,24 +96,25 @@ def train_drqn_sequential(**kwargs):
 
         if done:
             if len(episode_transitions) > 0:
-                episode_transitions = pad_episode(episode_transitions,maxSteps)
+                episode_transitions = pad_episode(episode_transitions)
                 memory.add_episode(episode_transitions)
             episode_transitions = []
             state = env.reset()
+            network.hidden = network.init_hidden()
             state = np.reshape(state, (1, -1))
             state = torch.from_numpy(state).to(device)
             dtype = torch.float32
             state = Variable(state.type(dtype)).to(device)
-            if env.startDelay >= 0:
-                # game pre-start
-                action = random.randint(0, env.action_space.n - 1)
+        if env.startDelay >= 0:
+            # game pre-start
+            action = random.randint(0, env.action_space.n - 1)
 
-            else:
-                validActions = env.getValidActions()
-                actionScores, hidden = network(state,hidden)
-                actionScores = actionScores.detach().cpu().numpy().squeeze()
-                actionScores = [actionScores[i] for i in validActions]
-                action = validActions[np.asarray(actionScores).argmax()]
+        else:
+            validActions = env.getValidActions()
+            actionScores = network(state)
+            actionScores = actionScores.detach().cpu().numpy().squeeze()
+            actionScores = [actionScores[i] for i in validActions]
+            action = validActions[np.asarray(actionScores).argmax()]
         eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
         if random.random() < eps:
             if env.startDelay >= 0:
@@ -160,7 +161,8 @@ def train_drqn_sequential(**kwargs):
             not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1).to(device)
             is_pad_mask = torch.tensor(is_pad_mask, dtype=torch.float32).unsqueeze(-1).to(device)
 
-            current_Q = network(batch_state).view(maxSteps,-1).gather(1, batch_action) * is_pad_mask
+            current_Q = network.forward_batch(batch_state).view(-1,4).gather(1, batch_action) * is_pad_mask
+            # current_Q = network(batch_state).view(batch,-1).gather(1, batch_action) * is_pad_mask
 
 
 
@@ -169,7 +171,7 @@ def train_drqn_sequential(**kwargs):
                     next_state_actions = network(batch_next_state).max(1, keepdim=True)[1]
                     next_Q = target_network(batch_next_state).gather(1, next_state_actions)
                 else:
-                    next_Q = target_network(batch_next_state).view(maxSteps,-1).max(1, keepdim=True)[0]
+                    next_Q = target_network.forward_batch(batch_next_state).view(-1,4).max(1, keepdim=True)[0]
 
                 target_Q = batch_reward + (gamma * next_Q) * not_done_mask * is_pad_mask
 
@@ -183,7 +185,7 @@ def train_drqn_sequential(**kwargs):
             if step % plot_update_freq == 0:
                 print('loss is: %f' % loss)
 
-            loss.backward(retain_graph = True)
+            loss.backward()
             #         for param in network.parameters():
             #             param.grad.data.clamp_(-1, 1)
             optimizer.step()
@@ -204,6 +206,7 @@ def train_drqn_sequential(**kwargs):
             total_reward = 0
             for eval_ep in range(eval_episodes):
 
+                network.hidden = network.init_hidden()
                 eval_state = eval_env.reset()
                 while True:
                     if is_visdom:
@@ -217,6 +220,12 @@ def train_drqn_sequential(**kwargs):
                         # game pre-start
                         action = random.randint(0, env.action_space.n - 1)
                     else:
+                        # validActions = env.getValidActions()
+                        # actionScores, hidden = network(state, hidden)
+                        # actionScores = actionScores.detach().cpu().numpy().squeeze()
+                        # actionScores = [actionScores[i] for i in validActions]
+                        # action = validActions[np.asarray(actionScores).argmax()]
+
                         validActions = eval_env.getValidActions()
                         actionScores = network(eval_state).detach().cpu().numpy().squeeze()
                         actionScores = [actionScores[i] for i in validActions]
@@ -315,14 +324,14 @@ def train_vannila_dqn(**kwargs):
             state = torch.from_numpy(state).to(device)
             dtype = torch.float32
             state = Variable(state.type(dtype)).to(device)
-            if env.startDelay >= 0:
-                # game pre-start
-                action = random.randint(0,env.action_space.n-1)
-            else:
-                validActions = env.getValidActions()
-                actionScores = network(state).detach().cpu().numpy().squeeze()
-                actionScores = [actionScores[i] for i in validActions]
-                action = validActions[np.asarray(actionScores).argmax()]
+        if env.startDelay >= 0:
+            # game pre-start
+            action = random.randint(0,env.action_space.n-1)
+        else:
+            validActions = env.getValidActions()
+            actionScores = network(state).detach().cpu().numpy().squeeze()
+            actionScores = [actionScores[i] for i in validActions]
+            action = validActions[np.asarray(actionScores).argmax()]
         eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
         if random.random() < eps:
             if env.startDelay >= 0:
