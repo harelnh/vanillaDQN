@@ -1,4 +1,5 @@
 import train
+import train_atary
 import os
 import copy
 
@@ -6,16 +7,17 @@ base_dir = os.path.abspath('results_2_fruit')
 if not os.path.exists(base_dir):
     os.mkdir(base_dir)
 
-is_run_drqn = True
-is_run_vanilla_dqn = True
-is_run_grid_search =  True
+is_run_atary_drqn = True
+is_run_drqn = False
+is_run_vanilla_dqn = False
+is_run_grid_search =  False
 is_run_best_results = False
 
 
 # these are our default params.
 kwargs = {
     'grid_dim': 3,
-    'num_of_obj': 2,
+    'num_of_obj': 1,
     'mem_capacity': 100000,
     'batch' : 128,
     'lr' : 0.001,
@@ -37,6 +39,21 @@ kwargs = {
     'output_path' : base_dir,
     'write_mode' : 'w',
 }
+
+
+if is_run_atary_drqn:
+    output_dir = os.path.abspath('atary_lstm')
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+    output_path = output_dir + '/log'
+    cur_kwargs = copy.deepcopy(kwargs)
+    cur_kwargs['output_path'] = output_path
+    cur_kwargs['hidden_dim'] = 128
+    cur_kwargs['lstm_layers'] = 10
+    cur_kwargs['batch'] = 1
+    cur_kwargs['traj_len'] = 100
+
+    result = train_atary.train_atary_lstm(**cur_kwargs)
 
 if is_run_drqn:
     output_dir = os.path.abspath('seqential_sampling')
