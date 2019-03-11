@@ -60,6 +60,7 @@ class DRQN_atary(nn.Module):
     def forward_batch(self,batch_state):
         batch_Q = torch.tensor([]).to(self.device)
         for state in batch_state:
+            # state = Variable(torch.FloatTensor(np.float32(state)).to(self.device))
             batch_Q = torch.cat((batch_Q, self.forward(state)))
         return batch_Q
 
@@ -86,6 +87,8 @@ class DRQN_atary(nn.Module):
         # The axes semantics are (num_layers, minibatch_size, hidden_dim)
         return (torch.zeros(self.lstm_layers, self.batch, self.hidden_dim).to(self.device),
          torch.zeros(self.lstm_layers, self.batch, self.hidden_dim).to(self.device))
+    def clone_hidden(self):
+        return (self.hidden[0].clone(),self.hidden[1].clone())
 
 class ReplayBuffer:
     def __init__(self, capacity, full_episodes_capacity = 1000):

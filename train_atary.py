@@ -59,8 +59,8 @@ def train_atary_lstm(**kwargs):
     env = wrap_deepmind(env)
     env = wrap_pytorch(env)
     eval_env = make_atari(env_id)
-    eval_env = wrap_deepmind(env)
-    eval_env = wrap_pytorch(env)
+    eval_env = wrap_deepmind(eval_env)
+    eval_env = wrap_pytorch(eval_env)
 
 
     # env = gameEnv(size=grid_dim, startDelay=num_of_obj, maxSteps=maxSteps - 2)
@@ -73,8 +73,8 @@ def train_atary_lstm(**kwargs):
 
     def pad_episode(episode_transitions):
 
-        zero_transition = Transition(torch.zeros(episode_transitions[0][0].shape).to(device),
-                                     0, 0, torch.zeros(episode_transitions[0][0].shape).to(device), 0, 0)
+        zero_transition = Transition(np.zeros(episode_transitions[0][0].shape),
+                                     0, 0, np.zeros(episode_transitions[0][0].shape), 0, 0)
 
         for i in range(traj_len - len(episode_transitions)):
             episode_transitions.append(zero_transition)
@@ -108,18 +108,19 @@ def train_atary_lstm(**kwargs):
                 episode_transitions = pad_episode(episode_transitions)
                 memory.add_episode(episode_transitions)
             episode_transitions = []
-            state = env.reset()
-            network.hidden = network.init_hidden()
-            # state = np.reshape(state, (1, -1))
-            state = torch.from_numpy(state).to(device)
-            dtype = torch.float32
-            state = Variable(state.type(dtype = torch.float32)).to(device)
+            if done:
+                state = env.reset()
+                network.hidden = network.init_hidden()
+                # state = np.reshape(state, (1, -1))
+                state = torch.from_numpy(state).to(device)
+                dtype = torch.float32
+                state = Variable(state.type(dtype = torch.float32)).to(device)
 
         traj_steps_cnt += 1
 
         eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
         if random.random() > eps:
-            state = Variable(torch.FloatTensor(np.float32(state)).unsqueeze(0), volatile=True)
+            # state = Variable(torch.FloatTensor(np.float32(state)).unsqueeze(0), volatile=True)
             q_value = network(state)
             action = q_value.max(1)[1].data[0]
         else:
@@ -129,8 +130,8 @@ def train_atary_lstm(**kwargs):
         next_state, reward, done, _ = env.step(action)
         # for the convolutional architecture, we keep it in the original shape
         # next_state = np.reshape(next_state, (1, -1))
-        next_state = torch.from_numpy(next_state).to(device)
-        next_state = Variable(next_state.type(dtype = torch.float32))
+        # next_state = torch.from_numpy(next_state).to(device)
+        # next_state = Variable(next_state.type(dtype = torch.float32))
         # after we made a step render it to visualize
         if is_visdom:
             env.render()
@@ -142,11 +143,16 @@ def train_atary_lstm(**kwargs):
         # Done due to timeout is a non-markovian property. This is an artifact which we would not like to learn from.
         # if not (done and reward < 0):
             # memory.add(state, action, reward, next_state, not done)
-        episode_transitions.append(Transition(state, action, reward, next_state, not done, 1))
+        episode_transitions.append(Transition(state, action, reward, next_state, not done, 1)) # Todo - done or not done
 
         state = next_state
 
+        # save the current hidden vector to restore it after
+        so_far_hidden = network.clone_hidden()
+
+        # train part
         if step > learn_start:
+            # TODO - is it better to save the hidden vec too in the beggining of each traj, or maybe it's wrong since the weights are changing
             network.hidden = network.init_hidden()
             target_network.hidden = target_network.init_hidden()
             optimizer.zero_grad()
@@ -180,6 +186,7 @@ def train_atary_lstm(**kwargs):
             all_params = torch.cat([x.view(-1) for x in
                                     network.parameters()])
             loss += l1_regularization * torch.norm(all_params, 1)
+            #TODO do we want to clamp like this, maybe the intersting info is above abs(1) so we need to use tanh or etc.
             loss = torch.clamp(loss, min=-1, max=1)
 
             if step % plot_update_freq == 0:
@@ -197,10 +204,13 @@ def train_atary_lstm(**kwargs):
             # plt.title("Losses")
             # env.vis.matplot(plt,win=4)
 
+        # after training session we restore the hidden vector values
+        network.hidden = so_far_hidden
+
         if step % target_update_freq == 0:
             # print('target network update')
             target_network.load_state_dict(network.state_dict())
-
+        # TODO - adapt to atary code
         if step % eval_freq == 0 and step > learn_start:
             network.eval()
             total_reward = 0
@@ -253,6 +263,9 @@ def train_atary_lstm(**kwargs):
         #     pl.plot(avg_rew_steps, average_rewards)
         #     pl.title('Reward')
         #     pl.show()
+
+
+
     tot_avg_reward = sum(average_rewards) / float(len(average_rewards))
     print('Run average reward: ' + str(tot_avg_reward))
     f.write('Run average reward: ' + str(tot_avg_reward) + '\n')
