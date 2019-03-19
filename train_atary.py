@@ -83,11 +83,11 @@ def train_atary_lstm(**kwargs):
 
     f = open(kwargs['output_path'], write_mode)
 
-    network = DRQN_atary(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers,traj_len, seed=3, device = device).to(device)
+    network = DRQN_atary(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers,batch, traj_len, seed=3, device = device).to(device)
     network.apply(init_weights)
-    target_network = DRQN_atary(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,traj_len, seed=3,device = device).to(device)
+    target_network = DRQN_atary(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,batch,traj_len, seed=3,device = device).to(device)
     target_network.load_state_dict(network.state_dict())
-    memory = ReplayBuffer(mem_capacity)
+    memory = ReplayBuffer(mem_capacity, batch)
 
     optimizer = optim.Adam(network.parameters(), lr=lr, amsgrad=True)
 
@@ -112,17 +112,17 @@ def train_atary_lstm(**kwargs):
                 state = env.reset()
                 network.hidden = network.init_hidden()
                 # state = np.reshape(state, (1, -1))
-                state = torch.from_numpy(state).to(device)
-                dtype = torch.float32
-                state = Variable(state.type(dtype = torch.float32)).to(device)
+                # state = torch.from_numpy(state).to(device)
+                # dtype = torch.float32
+                # state = Variable(state.type(dtype = torch.float32)).to(device)
 
         traj_steps_cnt += 1
 
         eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
         if random.random() > eps:
-            # state = Variable(torch.FloatTensor(np.float32(state)).unsqueeze(0), volatile=True)
-            q_value = network(state)
-            action = q_value.max(1)[1].data[0]
+            q_value = network(Variable(torch.FloatTensor(np.float32(state)).unsqueeze(0).to(device), volatile=True))
+            q_value = q_value.view(-1,output_size).cpu().detach().numpy()
+            action = np.argmax(q_value)
         else:
             action = random.randrange(env.action_space.n)
 
@@ -147,7 +147,7 @@ def train_atary_lstm(**kwargs):
 
         state = next_state
 
-        # save the current hidden vector to restore it after
+        # save the current hidden vector to restore it after training step
         so_far_hidden = network.clone_hidden()
 
         # train part
@@ -160,14 +160,20 @@ def train_atary_lstm(**kwargs):
 
             batch_state, batch_action, batch_reward, batch_next_state, not_done_mask, is_pad_mask = memory.sample_episode()
 
-            batch_state = torch.stack(batch_state).to(device)
-            batch_next_state = torch.stack(batch_next_state).to(device)
+            # batch_state = torch.stack(batch_state).to(device)
+            # batch_next_state = torch.stack(batch_next_state).to(device)
+            try:
+                batch_state = Variable(torch.FloatTensor(np.float32(batch_state)).to(device))
+            except:
+                a = 0
+            batch_next_state = Variable(torch.FloatTensor(np.float32(batch_next_state)).to(device), volatile=True)
             batch_action = torch.tensor(batch_action, dtype=torch.int64).unsqueeze(-1).to(device)
             batch_reward = torch.tensor(batch_reward, dtype=torch.float32).unsqueeze(-1).to(device)
             not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1).to(device)
             is_pad_mask = torch.tensor(is_pad_mask, dtype=torch.float32).unsqueeze(-1).to(device)
 
-            current_Q = network.forward_batch(batch_state).view(-1,4).gather(1, batch_action) * is_pad_mask
+            # current_Q = network.forward_batch(batch_state).view(-1,4).gather(1, batch_action) * is_pad_mask
+            current_Q = network.forward(batch_state).view(-1,output_size).gather(1, batch_action) * is_pad_mask
             # current_Q = network(batch_state).view(batch,-1).gather(1, batch_action) * is_pad_mask
 
 
@@ -177,7 +183,7 @@ def train_atary_lstm(**kwargs):
                     next_state_actions = network(batch_next_state).max(1, keepdim=True)[1]
                     next_Q = target_network(batch_next_state).gather(1, next_state_actions)
                 else:
-                    next_Q = target_network.forward_batch(batch_next_state).view(-1,4).max(1, keepdim=True)[0]
+                    next_Q = target_network.forward(batch_next_state).view(-1,output_size).max(1, keepdim=True)[0]
 
                 target_Q = batch_reward + (gamma * next_Q) * not_done_mask * is_pad_mask
 
@@ -213,6 +219,9 @@ def train_atary_lstm(**kwargs):
         # TODO - adapt to atary code
         if step % eval_freq == 0 and step > learn_start:
             network.eval()
+            # save the current hidden vector to restore it after training step
+            so_far_hidden = network.clone_hidden()
+
             total_reward = 0
             for eval_ep in range(eval_episodes):
 
@@ -221,25 +230,14 @@ def train_atary_lstm(**kwargs):
                 while True:
                     if is_visdom:
                         eval_env.render()
-                    eval_state = np.reshape(eval_state, (1, -1))
-                    eval_state = torch.from_numpy(eval_state).to(device)
-                    dtype = torch.float32
-                    eval_state = Variable(eval_state.type(dtype))
-                    # action = network(state).max(1)[1].item()
-                    if eval_env.startDelay >= 0:
-                        # game pre-start
-                        action = random.randint(0, env.action_space.n - 1)
-                    else:
-                        # validActions = env.getValidActions()
-                        # actionScores, hidden = network(state, hidden)
-                        # actionScores = actionScores.detach().cpu().numpy().squeeze()
-                        # actionScores = [actionScores[i] for i in validActions]
-                        # action = validActions[np.asarray(actionScores).argmax()]
 
-                        validActions = eval_env.getValidActions()
-                        actionScores = network(eval_state).detach().cpu().numpy().squeeze()
-                        actionScores = [actionScores[i] for i in validActions]
-                        action = validActions[np.asarray(actionScores).argmax()]
+                    # action = network(state).max(1)[1].item()
+
+                    q_value = network(
+                        Variable(torch.FloatTensor(np.float32(eval_state)).unsqueeze(0).to(device), volatile=True))
+                    q_value = q_value.view(-1, output_size).cpu().detach().numpy()
+                    action = np.argmax(q_value)
+
                     if random.random() < 0.01:
                         action = random.randrange(output_size)
 
@@ -249,6 +247,9 @@ def train_atary_lstm(**kwargs):
                     if done:
                         break
             network.train()
+
+            # after evaluation session we restore the hidden vector values
+            network.hidden = so_far_hidden
 
             average_reward = total_reward * 1.0 / eval_episodes
             average_rewards.append(average_reward)

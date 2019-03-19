@@ -9,8 +9,8 @@ if not os.path.exists(base_dir):
 
 is_run_atary_drqn = True
 is_run_drqn = False
-is_run_vanilla_dqn = False
-is_run_grid_search =  False
+is_run_vanilla_dqn = True
+is_run_grid_search =  True
 is_run_best_results = False
 
 
@@ -25,10 +25,10 @@ kwargs = {
     'gamma' : 0.99,
     'num_steps' : 300000,
     'target_update_freq': 500,
-    'learn_start' : 200,
+    'learn_start' : 400,
     'plot_update_freq' : 100,
     'eval_freq' : 500,
-    'eval_episodes' : 10,
+    'eval_episodes' : 3,
     'eps_decay' : 1000,
     'eps_end' : 0.1,
     'inner_linear_dim' : 100,
@@ -52,6 +52,7 @@ if is_run_atary_drqn:
     cur_kwargs['lstm_layers'] = 10
     cur_kwargs['batch'] = 1
     cur_kwargs['traj_len'] = 100
+    cur_kwargs['is_visdom'] = True
 
     result = train_atary.train_atary_lstm(**cur_kwargs)
 

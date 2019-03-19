@@ -15,7 +15,7 @@ Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state'
 
 
 class DRQN_atary(nn.Module):
-    def __init__(self, input_shape, out_size, inner_linear_dim,hidden_dim,lstm_layers,batch=32,
+    def __init__(self, input_shape, out_size, inner_linear_dim,hidden_dim,lstm_layers,batch=32,traj_len = 100,
                  dropout_prob=0, seed = None, device = torch.device('cpu')):
         super().__init__()
 
@@ -25,6 +25,7 @@ class DRQN_atary(nn.Module):
         self.input_shape = input_shape
         self.hidden_dim = hidden_dim
         self.batch = batch
+        self.traj_len = traj_len
         self.lstm_layers = lstm_layers
         self.device = device
         self.hidden = self.init_hidden()
@@ -48,7 +49,7 @@ class DRQN_atary(nn.Module):
             nn.ReLU(),
             # nn.Linear(512, self.num_actions)
         )
-        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=True, dropout=dropout_prob,
+        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=False, dropout=dropout_prob,
                                   bidirectional=False)
         self.lin2 = nn.Linear(hidden_dim, out_size)
         # omri & harel cnn architecture
@@ -61,6 +62,7 @@ class DRQN_atary(nn.Module):
         batch_Q = torch.tensor([]).to(self.device)
         for state in batch_state:
             # state = Variable(torch.FloatTensor(np.float32(state)).to(self.device))
+            state = torch.unsqueeze(state,0)
             batch_Q = torch.cat((batch_Q, self.forward(state)))
         return batch_Q
 
@@ -69,7 +71,7 @@ class DRQN_atary(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.fc(x)
 
-        # x = x.view(x.size(0),1, -1)
+        x = x.view(x.size(0),1, -1)
         # x = self.dropout1(F.relu(self.lin1(x)))
 
         output, self.hidden = self.lstm_layer(x, self.hidden)
@@ -91,8 +93,9 @@ class DRQN_atary(nn.Module):
         return (self.hidden[0].clone(),self.hidden[1].clone())
 
 class ReplayBuffer:
-    def __init__(self, capacity, full_episodes_capacity = 1000):
+    def __init__(self, capacity,  batch = 1, full_episodes_capacity = 1000):
         self.capacity = capacity
+        self.batch = batch
         self.full_episodes_capacity = full_episodes_capacity
         self.memory = []
         self.full_episodes_memory = []
@@ -118,7 +121,7 @@ class ReplayBuffer:
         return batch_state, batch_action, batch_reward, batch_next_state, batch_done
 
     def sample_episode(self):
-        episode = random.sample(self.full_episodes_memory, 1)[0]
+        episode = random.sample(self.full_episodes_memory, self.batch)[0]
         batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad = zip(*episode)
         return batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad
 
