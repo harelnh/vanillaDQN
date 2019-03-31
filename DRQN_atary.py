@@ -29,11 +29,12 @@ class DRQN_atary(nn.Module):
         self.lstm_layers = lstm_layers
         self.device = device
         self.hidden = self.init_hidden()
+        self.batch_hidden = self.init_batch_hidden()
 
         # self.lin1 = nn.Linear(in_size, inner_linear_dim)
         # self.dropout1 = nn.Dropout(dropout_prob)
-        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers,batch_first=True, dropout=dropout_prob,bidirectional=False)
-        self.lin2 = nn.Linear(hidden_dim, out_size)
+        # self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers,batch_first=True, dropout=dropout_prob,bidirectional=False)
+        # self.lin2 = nn.Linear(hidden_dim, out_size)
 
         self.features = nn.Sequential(
             nn.Conv2d(self.input_shape[0], 32, kernel_size=8, stride=4),
@@ -49,7 +50,7 @@ class DRQN_atary(nn.Module):
             nn.ReLU(),
             # nn.Linear(512, self.num_actions)
         )
-        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=False, dropout=dropout_prob,
+        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=True, dropout=dropout_prob,
                                   bidirectional=False)
         self.lin2 = nn.Linear(hidden_dim, out_size)
         # omri & harel cnn architecture
@@ -67,28 +68,43 @@ class DRQN_atary(nn.Module):
         return batch_Q
 
     def forward(self, x):
-        x = self.features(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
+        is_batch = True if len(x.shape) == 5 else False
 
-        x = x.view(x.size(0),1, -1)
-        # x = self.dropout1(F.relu(self.lin1(x)))
+        if is_batch:
+            x = x.view(self.batch * self.traj_len, 1, x.shape[-1], x.shape[-1])
+            x = self.features(x)
+            x = x.view(x.size(0), -1)
+            x = self.fc(x)
 
-        output, self.hidden = self.lstm_layer(x, self.hidden)
+            # x = x.view(x.size(0),1, -1)
+            x = x.view(self.batch, self.traj_len, -1)
+            output, self.batch_hidden = self.lstm_layer(x, self.batch_hidden)
+        else:
+            # x = x.view(self.batch * self.traj_len, 1, x.shape[-1], x.shape[-1])
+            x = self.features(x)
+            x = x.view(x.size(0), -1)
+            x = self.fc(x)
+
+            x = x.view(x.size(0),1, -1)
+            # x = x.view(self.batch, self.traj_len, -1)
+            output, self.hidden = self.lstm_layer(x, self.hidden)
+
+
         return self.lin2(F.relu(output))
 
     def feature_size(self):
         return self.features(autograd.Variable(torch.zeros(1, *self.input_shape))).view(1, -1).size(1)
 
-
-
     def init_hidden(self):
-        # Before we've done anything, we dont have any hidden state.
-        # Refer to the Pytorch documentation to see exactly
-        # why they have this dimensionality.
+        # The axes semantics are (num_layers, minibatch_size, hidden_dim)
+        return (torch.zeros(self.lstm_layers, 1, self.hidden_dim).to(self.device),
+         torch.zeros(self.lstm_layers, 1, self.hidden_dim).to(self.device))
+
+    def init_batch_hidden(self):
         # The axes semantics are (num_layers, minibatch_size, hidden_dim)
         return (torch.zeros(self.lstm_layers, self.batch, self.hidden_dim).to(self.device),
          torch.zeros(self.lstm_layers, self.batch, self.hidden_dim).to(self.device))
+
     def clone_hidden(self):
         return (self.hidden[0].clone(),self.hidden[1].clone())
 
@@ -121,8 +137,17 @@ class ReplayBuffer:
         return batch_state, batch_action, batch_reward, batch_next_state, batch_done
 
     def sample_episode(self):
-        episode = random.sample(self.full_episodes_memory, self.batch)[0]
-        batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad = zip(*episode)
+        episodes = random.sample(self.full_episodes_memory, self.batch)
+        # episode = random.sample(self.full_episodes_memory, self.batch)
+        batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad = [],[],[],[],[],[]
+        for episode in episodes:
+            episode_state, episode_action, episode_reward, episode_next_state, episode_done, episode_is_pad = zip(*episode)
+            batch_state.append(episode_state)
+            batch_action.append(episode_action)
+            batch_reward.append(episode_reward)
+            batch_next_state.append(episode_next_state)
+            batch_done.append(episode_done)
+            batch_is_pad.append(episode_is_pad)
         return batch_state, batch_action, batch_reward, batch_next_state, batch_done, batch_is_pad
 
     def __len__(self):

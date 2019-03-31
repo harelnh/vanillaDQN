@@ -1,4 +1,4 @@
-import train
+import train_gridworld
 import train_atary
 import os
 import copy
@@ -23,9 +23,9 @@ kwargs = {
     'lr' : 0.001,
     'double_dqn' : False,
     'gamma' : 0.99,
-    'num_steps' : 300000,
+    'num_steps' : 3000000,
     'target_update_freq': 500,
-    'learn_start' : 400,
+    'learn_start' : 8000,
     'plot_update_freq' : 100,
     'eval_freq' : 500,
     'eval_episodes' : 3,
@@ -50,9 +50,9 @@ if is_run_atary_drqn:
     cur_kwargs['output_path'] = output_path
     cur_kwargs['hidden_dim'] = 128
     cur_kwargs['lstm_layers'] = 10
-    cur_kwargs['batch'] = 1
+    cur_kwargs['batch'] = 16
     cur_kwargs['traj_len'] = 100
-    cur_kwargs['is_visdom'] = True
+    cur_kwargs['is_visdom'] = False
 
     result = train_atary.train_atary_lstm(**cur_kwargs)
 
@@ -67,7 +67,7 @@ if is_run_drqn:
     cur_kwargs['lstm_layers'] = 10
     cur_kwargs['batch'] = 1
 
-    result = train.train_drqn_sequential(**cur_kwargs)
+    result = train_gridworld.train_drqn_sequential(**cur_kwargs)
 
 if is_run_vanilla_dqn:
 
@@ -89,7 +89,7 @@ if is_run_vanilla_dqn:
         avg_rewards = []
         iter_num = 10
         for iter in range(iter_num):
-            avg_rewards.append(train.train_vannila_dqn(**cur_kwargs))
+            avg_rewards.append(train_gridworld.train_vannila_dqn(**cur_kwargs))
             cur_kwargs['write_mode'] = 'a'
         f = open(output_path,'a')
         f.write('Total average reward: ' + str(sum(avg_rewards)/float(len(avg_rewards))))
@@ -109,7 +109,7 @@ if is_run_vanilla_dqn:
             cur_kwargs = copy.deepcopy(kwargs)
             cur_kwargs['lr'] = lr
             cur_kwargs['output_path'] = base_dir + dir_name + '/' + 'lr_' + str(lr)
-            train.train_vannila_dqn(**cur_kwargs)
+            train_gridworld.train_vannila_dqn(**cur_kwargs)
 
         # run over batch size
         batch_size_range = [32,64,128,256,512]
@@ -124,7 +124,7 @@ if is_run_vanilla_dqn:
             cur_kwargs = copy.deepcopy(kwargs)
             cur_kwargs['batch'] = batch_size
             cur_kwargs['output_path'] = base_dir + dir_name + '/' + 'batch_' + str(batch_size)
-            train.train_vannila_dqn(**cur_kwargs)
+            train_gridworld.train_vannila_dqn(**cur_kwargs)
 
         # run over target network update frequency
         target_update_freq_range = [250,500,750,1000,1500]
@@ -139,5 +139,5 @@ if is_run_vanilla_dqn:
             cur_kwargs = copy.deepcopy(kwargs)
             cur_kwargs['target_update_freq'] = update_freq
             cur_kwargs['output_path'] = base_dir + dir_name + '/' + 'target_update_freq_' + str(update_freq)
-            train.train_vannila_dqn(**cur_kwargs)
+            train_gridworld.train_vannila_dqn(**cur_kwargs)
 

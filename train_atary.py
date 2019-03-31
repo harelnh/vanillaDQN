@@ -20,9 +20,7 @@ random.seed(3)
 
 def train_atary_lstm(**kwargs):
 
-
     random.seed(3)
-
 
     grid_dim = kwargs['grid_dim']
     num_of_obj = kwargs['num_of_obj']
@@ -153,8 +151,8 @@ def train_atary_lstm(**kwargs):
         # train part
         if step > learn_start:
             # TODO - is it better to save the hidden vec too in the beggining of each traj, or maybe it's wrong since the weights are changing
-            network.hidden = network.init_hidden()
-            target_network.hidden = target_network.init_hidden()
+            network.batch_hidden = network.init_batch_hidden()
+            target_network.batch_hidden = target_network.init_batch_hidden()
             optimizer.zero_grad()
 
 
@@ -167,15 +165,14 @@ def train_atary_lstm(**kwargs):
             except:
                 a = 0
             batch_next_state = Variable(torch.FloatTensor(np.float32(batch_next_state)).to(device), volatile=True)
-            batch_action = torch.tensor(batch_action, dtype=torch.int64).unsqueeze(-1).to(device)
-            batch_reward = torch.tensor(batch_reward, dtype=torch.float32).unsqueeze(-1).to(device)
-            not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).unsqueeze(-1).to(device)
-            is_pad_mask = torch.tensor(is_pad_mask, dtype=torch.float32).unsqueeze(-1).to(device)
+            batch_action = torch.tensor(batch_action, dtype=torch.int64).view(batch * traj_len,-1).to(device)
+            batch_reward = torch.tensor(batch_reward, dtype=torch.float32).view(batch * traj_len,-1).to(device)
+            not_done_mask = torch.tensor(not_done_mask, dtype=torch.float32).view(batch * traj_len,-1).to(device)
+            is_pad_mask = torch.tensor(is_pad_mask, dtype=torch.float32).view(batch * traj_len,-1).to(device)
 
             # current_Q = network.forward_batch(batch_state).view(-1,4).gather(1, batch_action) * is_pad_mask
             current_Q = network.forward(batch_state).view(-1,output_size).gather(1, batch_action) * is_pad_mask
             # current_Q = network(batch_state).view(batch,-1).gather(1, batch_action) * is_pad_mask
-
 
 
             with torch.no_grad():
@@ -228,8 +225,8 @@ def train_atary_lstm(**kwargs):
                 network.hidden = network.init_hidden()
                 eval_state = eval_env.reset()
                 while True:
-                    if is_visdom:
-                        eval_env.render()
+                    # if is_visdom:
+                    eval_env.render()
 
                     # action = network(state).max(1)[1].item()
 
@@ -271,6 +268,6 @@ def train_atary_lstm(**kwargs):
     print('Run average reward: ' + str(tot_avg_reward))
     f.write('Run average reward: ' + str(tot_avg_reward) + '\n')
     f.close()
-    torch.save(network.state_dict(), 'dqn')
+    torch.save(network.state_dict(), 'drqn_' + str(tot_avg_reward))
     return tot_avg_reward
 
