@@ -85,6 +85,10 @@ def train_atary_lstm(**kwargs):
     network.apply(init_weights)
     target_network = DRQN_atary(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,batch,traj_len, seed=3,device = device).to(device)
     target_network.load_state_dict(network.state_dict())
+
+    # network.load_state_dict(torch.load('drqn_-20.45854483924511'))
+    # target_network.load_state_dict(torch.load('drqn_-20.45854483924511'))
+
     memory = ReplayBuffer(mem_capacity, batch)
 
     optimizer = optim.Adam(network.parameters(), lr=lr, amsgrad=True)
@@ -264,7 +268,7 @@ def train_atary_lstm(**kwargs):
 
 
 
-    tot_avg_reward = sum(average_rewards) / float(len(average_rewards))
+    tot_avg_reward = sum(average_rewards) / (float(len(average_rewards)) + 0.0000000001)
     print('Run average reward: ' + str(tot_avg_reward))
     f.write('Run average reward: ' + str(tot_avg_reward) + '\n')
     f.close()

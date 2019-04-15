@@ -23,15 +23,15 @@ kwargs = {
     'lr' : 0.001,
     'double_dqn' : False,
     'gamma' : 0.99,
-    'num_steps' : 3000000,
-    'target_update_freq': 500,
-    'learn_start' : 8000,
+    'num_steps' : 1000000,
+    'target_update_freq': 10000,
+    'learn_start' : 10000,
     'plot_update_freq' : 100,
-    'eval_freq' : 500,
+    'eval_freq' : 3000,
     'eval_episodes' : 3,
-    'eps_decay' : 1000,
-    'eps_end' : 0.1,
-    'inner_linear_dim' : 100,
+    'eps_decay' : 30000,
+    'eps_end' : 0.01,
+    'inner_linear_dim' : 512,
     'l1_regularization': 0,
     'dropout' : 0,
     'maxSteps' : 30,
@@ -50,11 +50,21 @@ if is_run_atary_drqn:
     cur_kwargs['output_path'] = output_path
     cur_kwargs['hidden_dim'] = 128
     cur_kwargs['lstm_layers'] = 10
-    cur_kwargs['batch'] = 16
-    cur_kwargs['traj_len'] = 100
+    cur_kwargs['batch'] = 32
+    cur_kwargs['traj_len'] = 10
     cur_kwargs['is_visdom'] = False
-
-    result = train_atary.train_atary_lstm(**cur_kwargs)
+    lr_range = [0.00001]
+    traj_len_range = [50,100]
+    batch_size_range = [32]
+    for lr in lr_range:
+        for traj_len in traj_len_range:
+            for batch in batch_size_range:
+                print ("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f}".format(lr,batch,traj_len))
+                cur_kwargs['lr'] = lr
+                cur_kwargs['batch'] = batch
+                cur_kwargs['traj_len'] = traj_len
+                cur_kwargs['output_path'] = output_dir + '/lr_' + str(lr) + '_batch_' + str(batch) + '_traj_len_' + str(traj_len)
+                result = train_atary.train_atary_lstm(**cur_kwargs)
 
 if is_run_drqn:
     output_dir = os.path.abspath('seqential_sampling')
@@ -66,6 +76,7 @@ if is_run_drqn:
     cur_kwargs['hidden_dim'] = 128
     cur_kwargs['lstm_layers'] = 10
     cur_kwargs['batch'] = 1
+    cur_kwargs['lr'] = 0.00001
 
     result = train_gridworld.train_drqn_sequential(**cur_kwargs)
 

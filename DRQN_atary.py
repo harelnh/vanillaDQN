@@ -48,7 +48,6 @@ class DRQN_atary(nn.Module):
         self.fc = nn.Sequential(
             nn.Linear(self.feature_size(), inner_linear_dim),
             nn.ReLU(),
-            # nn.Linear(512, self.num_actions)
         )
         self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=True, dropout=dropout_prob,
                                   bidirectional=False)
@@ -69,6 +68,12 @@ class DRQN_atary(nn.Module):
 
     def forward(self, x):
         is_batch = True if len(x.shape) == 5 else False
+        # if False:
+        #     for i in range(x.shape[0]):
+        #         x[i] = torch.zeros(x.shape[1:]) + i
+            # x = x.view(self.batch * self.traj_len, 1, x.shape[-1], x.shape[-1])
+            # x = x.view(x.size(0), -1)
+            # x = x.view(self.batch, self.traj_len, -1)
 
         if is_batch:
             x = x.view(self.batch * self.traj_len, 1, x.shape[-1], x.shape[-1])

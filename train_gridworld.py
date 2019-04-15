@@ -455,7 +455,7 @@ def train_vannila_dqn(**kwargs):
         #     pl.plot(avg_rew_steps, average_rewards)
         #     pl.title('Reward')
         #     pl.show()
-    tot_avg_reward = sum(average_rewards)/float(len(average_rewards))
+    tot_avg_reward = sum(average_rewards)/float(len(average_rewards) + 0.0000000001)
     print('Run average reward: ' + str(tot_avg_reward))
     f.write('Run average reward: ' + str(tot_avg_reward) +'\n')
     f.close()
