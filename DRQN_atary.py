@@ -16,7 +16,7 @@ Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state'
 
 class DRQN_atary(nn.Module):
     def __init__(self, input_shape, out_size, inner_linear_dim,hidden_dim,lstm_layers,batch=32,traj_len = 100,
-                 dropout_prob=0, seed = None, device = torch.device('cpu')):
+                 dropout_prob=0, seed = None, device = torch.device('cpu'), is_rnn = False):
         super().__init__()
 
         if not seed == None:
@@ -30,6 +30,7 @@ class DRQN_atary(nn.Module):
         self.device = device
         self.hidden = self.init_hidden()
         self.batch_hidden = self.init_batch_hidden()
+        self.is_rnn = is_rnn
 
         # self.lin1 = nn.Linear(in_size, inner_linear_dim)
         # self.dropout1 = nn.Dropout(dropout_prob)
@@ -45,13 +46,20 @@ class DRQN_atary(nn.Module):
             nn.ReLU()
         )
 
-        self.fc = nn.Sequential(
-            nn.Linear(self.feature_size(), inner_linear_dim),
-            nn.ReLU(),
-        )
-        self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=True, dropout=dropout_prob,
+        if not is_rnn:
+            self.fc = nn.Sequential(
+                nn.Linear(self.feature_size(), inner_linear_dim),
+                nn.ReLU(),
+                nn.Linear(inner_linear_dim,out_size)
+            )
+        else:
+            self.fc = nn.Sequential(
+                nn.Linear(self.feature_size(), inner_linear_dim),
+                nn.ReLU()
+            )
+            self.lstm_layer = nn.LSTM(inner_linear_dim, hidden_dim, lstm_layers, batch_first=True, dropout=dropout_prob,
                                   bidirectional=False)
-        self.lin2 = nn.Linear(hidden_dim, out_size)
+            self.lin2 = nn.Linear(hidden_dim, out_size)
         # omri & harel cnn architecture
         # self.conv1 = nn.Conv2d(3,32,kernel_size=3)
         # self.conv2 = nn.Conv2d(32,64,kernel_size=3)
@@ -80,6 +88,8 @@ class DRQN_atary(nn.Module):
             x = self.features(x)
             x = x.view(x.size(0), -1)
             x = self.fc(x)
+            if not self.is_rnn:
+                return x
 
             # x = x.view(x.size(0),1, -1)
             x = x.view(self.batch, self.traj_len, -1)
@@ -89,6 +99,8 @@ class DRQN_atary(nn.Module):
             x = self.features(x)
             x = x.view(x.size(0), -1)
             x = self.fc(x)
+            if not self.is_rnn:
+                return x
 
             x = x.view(x.size(0),1, -1)
             # x = x.view(self.batch, self.traj_len, -1)
@@ -114,10 +126,10 @@ class DRQN_atary(nn.Module):
         return (self.hidden[0].clone(),self.hidden[1].clone())
 
 class ReplayBuffer:
-    def __init__(self, capacity,  batch = 1, full_episodes_capacity = 1000):
+    def __init__(self, capacity,  batch = 1):
         self.capacity = capacity
         self.batch = batch
-        self.full_episodes_capacity = full_episodes_capacity
+        self.full_episodes_capacity = capacity
         self.memory = []
         self.full_episodes_memory = []
         self.position = 0

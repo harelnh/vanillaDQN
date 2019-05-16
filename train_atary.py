@@ -1,3 +1,4 @@
+import math
 import torch
 import torch.nn as nn
 from torch import optim
@@ -22,9 +23,6 @@ def train_atary_lstm(**kwargs):
 
     random.seed(3)
 
-    grid_dim = kwargs['grid_dim']
-    num_of_obj = kwargs['num_of_obj']
-    maxSteps = kwargs['maxSteps']
     mem_capacity = kwargs['mem_capacity']
     batch = kwargs['batch']
     lr = kwargs['lr']
@@ -46,6 +44,7 @@ def train_atary_lstm(**kwargs):
     is_visdom = kwargs['is_visdom']
     write_mode = kwargs['write_mode']
     traj_len = kwargs['traj_len']
+    is_rnn = kwargs['is_rnn']
 
     if torch.cuda.is_available():
         device = torch.device('cuda')
@@ -81,9 +80,8 @@ def train_atary_lstm(**kwargs):
 
     f = open(kwargs['output_path'], write_mode)
 
-    network = DRQN_atary(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers,batch, traj_len, seed=3, device = device).to(device)
-    network.apply(init_weights)
-    target_network = DRQN_atary(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,batch,traj_len, seed=3,device = device).to(device)
+    network = DRQN_atary(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers,batch, traj_len, seed=3, device = device,is_rnn = is_rnn).to(device)
+    target_network = DRQN_atary(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,batch,traj_len, seed=3,device = device,is_rnn = is_rnn).to(device)
     target_network.load_state_dict(network.state_dict())
 
     # network.load_state_dict(torch.load('drqn_-20.45854483924511'))
@@ -91,7 +89,7 @@ def train_atary_lstm(**kwargs):
 
     memory = ReplayBuffer(mem_capacity, batch)
 
-    optimizer = optim.Adam(network.parameters(), lr=lr, amsgrad=True)
+    optimizer = optim.Adam(network.parameters(), lr=lr)
 
     average_rewards = []
     avg_rew_steps = []
@@ -100,6 +98,11 @@ def train_atary_lstm(**kwargs):
     episode_transitions = []
     done = True
     traj_steps_cnt = 0
+    epsilon_start = 1.0
+    epsilon_final = 0.01
+    epsilon_decay = 30000
+    epsilon_by_frame = lambda frame_idx: epsilon_final + (epsilon_start - epsilon_final) * math.exp(
+        -1. * frame_idx / epsilon_decay)
 
     for step in range(num_steps):
 
@@ -113,14 +116,14 @@ def train_atary_lstm(**kwargs):
             if done:
                 state = env.reset()
                 network.hidden = network.init_hidden()
-                # state = np.reshape(state, (1, -1))
-                # state = torch.from_numpy(state).to(device)
-                # dtype = torch.float32
-                # state = Variable(state.type(dtype = torch.float32)).to(device)
+
 
         traj_steps_cnt += 1
+        # old epsilon
+        # eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
+        # new epsilon
+        eps = epsilon_by_frame(step)
 
-        eps = max((eps_decay - step + learn_start) / eps_decay, eps_end)
         if random.random() > eps:
             q_value = network(Variable(torch.FloatTensor(np.float32(state)).unsqueeze(0).to(device), volatile=True))
             q_value = q_value.view(-1,output_size).cpu().detach().numpy()
@@ -130,10 +133,7 @@ def train_atary_lstm(**kwargs):
 
 
         next_state, reward, done, _ = env.step(action)
-        # for the convolutional architecture, we keep it in the original shape
-        # next_state = np.reshape(next_state, (1, -1))
-        # next_state = torch.from_numpy(next_state).to(device)
-        # next_state = Variable(next_state.type(dtype = torch.float32))
+
         # after we made a step render it to visualize
         if is_visdom:
             env.render()
@@ -162,12 +162,8 @@ def train_atary_lstm(**kwargs):
 
             batch_state, batch_action, batch_reward, batch_next_state, not_done_mask, is_pad_mask = memory.sample_episode()
 
-            # batch_state = torch.stack(batch_state).to(device)
-            # batch_next_state = torch.stack(batch_next_state).to(device)
-            try:
-                batch_state = Variable(torch.FloatTensor(np.float32(batch_state)).to(device))
-            except:
-                a = 0
+
+            batch_state = Variable(torch.FloatTensor(np.float32(batch_state)).to(device))
             batch_next_state = Variable(torch.FloatTensor(np.float32(batch_next_state)).to(device), volatile=True)
             batch_action = torch.tensor(batch_action, dtype=torch.int64).view(batch * traj_len,-1).to(device)
             batch_reward = torch.tensor(batch_reward, dtype=torch.float32).view(batch * traj_len,-1).to(device)
@@ -188,18 +184,20 @@ def train_atary_lstm(**kwargs):
 
                 target_Q = batch_reward + (gamma * next_Q) * not_done_mask * is_pad_mask
 
-            loss = F.smooth_l1_loss(current_Q, target_Q)
+            # loss = F.smooth_l1_loss(current_Q, target_Q)
+            loss = (current_Q - target_Q).pow(2).mean()
             # all_params = torch.cat([x.view(-1) for x in model.parameters()])
             all_params = torch.cat([x.view(-1) for x in
                                     network.parameters()])
-            loss += l1_regularization * torch.norm(all_params, 1)
+            # loss += l1_regularization * torch.norm(all_params, 1)
             #TODO do we want to clamp like this, maybe the intersting info is above abs(1) so we need to use tanh or etc.
-            loss = torch.clamp(loss, min=-1, max=1)
+            # loss = torch.clamp(loss, min=-1, max=1)
 
             if step % plot_update_freq == 0:
                 print('loss is: %f' % loss)
 
             loss.backward()
+            # found as helpful to limit max grad values
             #         for param in network.parameters():
             #             param.grad.data.clamp_(-1, 1)
             optimizer.step()
