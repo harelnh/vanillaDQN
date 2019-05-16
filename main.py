@@ -1,5 +1,5 @@
 import train_gridworld
-import train_atary
+import train_atari
 import os
 import copy
 
@@ -46,7 +46,7 @@ kwargs = {
 print("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f}".format(kwargs['lr'], kwargs['batch'], kwargs['traj_len']))
 output_dir = os.path.abspath('atary_lstm')
 kwargs['output_path'] = output_dir + '/lr_' + str(kwargs['lr']) + '_batch_' + str(kwargs['batch']) + '_traj_len_' + str(kwargs['traj_len'])
-result = train_atary.train_atary_lstm(**kwargs)
+result = train_atari.train_atari_lstm(**kwargs)
 
 
 
@@ -76,7 +76,7 @@ if is_greed_search:
                     cur_kwargs['batch'] = batch
                     cur_kwargs['traj_len'] = traj_len
                     cur_kwargs['output_path'] = output_dir + '/lr_' + str(lr) + '_batch_' + str(batch) + '_traj_len_' + str(traj_len)
-                    result = train_atary.train_atary_lstm(**cur_kwargs)
+                    result = train_atari.train_atari_lstm(**cur_kwargs)
 
     if is_run_drqn:
         output_dir = os.path.abspath('seqential_sampling')

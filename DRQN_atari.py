@@ -14,7 +14,7 @@ from IPython.display import clear_output
 Transition = namedtuple('Transition', ('state', 'action', 'reward', 'next_state', 'done'))
 
 
-class DRQN_atary(nn.Module):
+class DRQN_atari(nn.Module):
     def __init__(self, input_shape, out_size, inner_linear_dim,hidden_dim,lstm_layers,batch=32,traj_len = 100,
                  dropout_prob=0, seed = None, device = torch.device('cpu'), is_rnn = False):
         super().__init__()

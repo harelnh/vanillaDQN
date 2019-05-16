@@ -10,7 +10,7 @@ from collections import namedtuple
 import random
 from matplotlib import pyplot as pl
 from IPython.display import clear_output
-from DRQN_atary import DRQN_atary, ReplayBuffer, init_weights
+from DRQN_atari import DRQN_atari, ReplayBuffer, init_weights
 from GridWorldSimon import gameEnv
 from torch.autograd import Variable
 import matplotlib.pyplot as plt
@@ -19,7 +19,7 @@ from common.wrappers import make_atari, wrap_deepmind, wrap_pytorch
 random.seed(3)
 
 
-def train_atary_lstm(**kwargs):
+def train_atari_lstm(**kwargs):
 
     random.seed(3)
 
@@ -80,8 +80,8 @@ def train_atary_lstm(**kwargs):
 
     f = open(kwargs['output_path'], write_mode)
 
-    network = DRQN_atary(input_size, output_size, inner_linear_dim,hidden_dim,lstm_layers,batch, traj_len, seed=3, device = device,is_rnn = is_rnn).to(device)
-    target_network = DRQN_atary(input_size, output_size, inner_linear_dim, hidden_dim,lstm_layers,batch,traj_len, seed=3,device = device,is_rnn = is_rnn).to(device)
+    network = DRQN_atari(input_size, output_size, inner_linear_dim, hidden_dim, lstm_layers, batch, traj_len, seed=3, device = device, is_rnn = is_rnn).to(device)
+    target_network = DRQN_atari(input_size, output_size, inner_linear_dim, hidden_dim, lstm_layers, batch, traj_len, seed=3, device = device, is_rnn = is_rnn).to(device)
     target_network.load_state_dict(network.state_dict())
 
     # network.load_state_dict(torch.load('drqn_-20.45854483924511'))
