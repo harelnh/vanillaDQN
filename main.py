@@ -25,7 +25,7 @@ kwargs = {
     'target_update_freq': 1,
     'learn_start' : 10000,
     'plot_update_freq' : 100,
-    'eval_freq' : 5000,
+    'eval_freq' : 20000,
     'eval_episodes' : 3,
     'eps_decay' : 30000,
     'eps_end' : 0.01,
@@ -33,13 +33,13 @@ kwargs = {
     'l1_regularization': 0,
     'dropout' : 0,
     'maxSteps' : 30,
-    'is_visdom' : True,
+    'is_visdom' : False,
     'output_path' : base_dir,
     'write_mode' : 'w',
     'is_rnn' : True,
-    'traj_len': 1,
-    'hidden_dim': 128,
-    'lstm_layers': 10,
+    'traj_len': 10,
+    'hidden_dim': 256,
+    'lstm_layers': 1,
 }
 
 
@@ -65,18 +65,21 @@ if is_greed_search:
         cur_kwargs['lstm_layers'] = 10
         cur_kwargs['batch'] = 32
         # lr_range = [0.00001,0.00025]
-        lr_range = [0.00001]
-        traj_len_range = [1,1,1,1]
+        lr_range = [0.00001, 0.00025]
+        traj_len_range = [1,10]
+        target_update_freq_range = [1,100,500]
         batch_size_range = [32]
         for lr in lr_range:
             for traj_len in traj_len_range:
                 for batch in batch_size_range:
-                    print ("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f}".format(lr,batch,traj_len))
-                    cur_kwargs['lr'] = lr
-                    cur_kwargs['batch'] = batch
-                    cur_kwargs['traj_len'] = traj_len
-                    cur_kwargs['output_path'] = output_dir + '/lr_' + str(lr) + '_batch_' + str(batch) + '_traj_len_' + str(traj_len)
-                    result = train_atari.train_atari_lstm(**cur_kwargs)
+                    for update_freq in target_update_freq_range:
+                        print ("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f} update frequency {:f}".format(lr,batch,traj_len,update_freq))
+                        cur_kwargs['lr'] = lr
+                        cur_kwargs['batch'] = batch
+                        cur_kwargs['traj_len'] = traj_len
+                        cur_kwargs['target_update_freq'] = update_freq
+                        cur_kwargs['output_path'] = output_dir + '/lr_' + str(lr) + '_batch_' + str(batch) + '_traj_len_' + str(traj_len) + '_update_freq_' + str(update_freq)
+                        result = train_atari.train_atari_lstm(**cur_kwargs)
 
     if is_run_drqn:
         output_dir = os.path.abspath('seqential_sampling')
