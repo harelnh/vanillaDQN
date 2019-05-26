@@ -45,6 +45,7 @@ def train_atari_lstm(**kwargs):
     write_mode = kwargs['write_mode']
     traj_len = kwargs['traj_len']
     is_rnn = kwargs['is_rnn']
+    # is_flickering = kwargs['is_flickering']
 
     if torch.cuda.is_available():
         device = torch.device('cuda')
@@ -84,8 +85,8 @@ def train_atari_lstm(**kwargs):
     target_network = DRQN_atari(input_size, output_size, inner_linear_dim, hidden_dim, lstm_layers, batch, traj_len, seed=3, device = device, is_rnn = is_rnn).to(device)
     target_network.load_state_dict(network.state_dict())
 
-    # network.load_state_dict(torch.load('drqn_-20.45854483924511'))
-    # target_network.load_state_dict(torch.load('drqn_-20.45854483924511'))
+    network.load_state_dict(torch.load('drqn_12.202898550706951'))
+    target_network.load_state_dict(torch.load('drqn_12.202898550706951'))
 
     memory = ReplayBuffer(mem_capacity, batch)
 
@@ -133,6 +134,10 @@ def train_atari_lstm(**kwargs):
 
 
         next_state, reward, done, _ = env.step(action)
+        # if is_flickering:
+        #     next_state = np.zeros(next_state.shape)
+        #     reward = 0
+        #     done = 0
 
         # after we made a step render it to visualize
         if is_visdom:
