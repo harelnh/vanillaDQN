@@ -2,6 +2,8 @@ import train_gridworld
 import train_atari
 import os
 import copy
+import datetime
+
 
 base_dir = os.path.abspath('results_2_fruit')
 if not os.path.exists(base_dir):
@@ -22,10 +24,10 @@ kwargs = {
     'double_dqn' : False,
     'gamma' : 0.99,
     'num_steps' : 1400000,
-    'target_update_freq': 500,
+    'target_update_freq': 1,
     'learn_start' : 10000,
-    'plot_update_freq' : 100,
-    'eval_freq' : 20000,
+    'plot_update_freq' : 1000,
+    'eval_freq' : 7000,
     'eval_episodes' : 3,
     'eps_decay' : 30000,
     'eps_end' : 0.01,
@@ -33,17 +35,19 @@ kwargs = {
     'l1_regularization': 0,
     'dropout' : 0,
     'maxSteps' : 30,
-    'is_visdom' : True,
+    'is_visdom' : False,
     'output_path' : base_dir,
     'write_mode' : 'w',
     'is_rnn' : True,
-    'traj_len': 30,
+    'traj_len': 10,
     'hidden_dim': 256,
     'lstm_layers': 1,
+    'flickering_p': 0.2,
 }
 
 
 print("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f}".format(kwargs['lr'], kwargs['batch'], kwargs['traj_len']))
+print(datetime.datetime.now())
 output_dir = os.path.abspath('atary_lstm')
 kwargs['output_path'] = output_dir + '/lr_' + str(kwargs['lr']) + '_batch_' + str(kwargs['batch']) + '_traj_len_' + str(kwargs['traj_len'])
 result = train_atari.train_atari_lstm(**kwargs)

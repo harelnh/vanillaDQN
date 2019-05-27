@@ -18,6 +18,8 @@ from common.wrappers import make_atari, wrap_deepmind, wrap_pytorch
 
 random.seed(3)
 
+def decision(probability):
+    return random.random() < probability
 
 def train_atari_lstm(**kwargs):
 
@@ -45,6 +47,7 @@ def train_atari_lstm(**kwargs):
     write_mode = kwargs['write_mode']
     traj_len = kwargs['traj_len']
     is_rnn = kwargs['is_rnn']
+    flickering_p = kwargs['flickering_p']
     # is_flickering = kwargs['is_flickering']
 
     if torch.cuda.is_available():
@@ -85,8 +88,9 @@ def train_atari_lstm(**kwargs):
     target_network = DRQN_atari(input_size, output_size, inner_linear_dim, hidden_dim, lstm_layers, batch, traj_len, seed=3, device = device, is_rnn = is_rnn).to(device)
     target_network.load_state_dict(network.state_dict())
 
-    network.load_state_dict(torch.load('drqn_12.202898550706951'))
-    target_network.load_state_dict(torch.load('drqn_12.202898550706951'))
+    # using pretrained models
+    # network.load_state_dict(torch.load('drqn_12.202898550706951'))
+    # target_network.load_state_dict(torch.load('drqn_12.202898550706951'))
 
     memory = ReplayBuffer(mem_capacity, batch)
 
@@ -134,10 +138,12 @@ def train_atari_lstm(**kwargs):
 
 
         next_state, reward, done, _ = env.step(action)
-        # if is_flickering:
-        #     next_state = np.zeros(next_state.shape)
-        #     reward = 0
-        #     done = 0
+
+        # with a chosen probability, screen is fully obscured (following the paper: https://arxiv.org/pdf/1507.06527.pdf)
+        if decision(flickering_p):
+            next_state = np.zeros(next_state.shape)
+            reward = 0
+            done = 0
 
         # after we made a step render it to visualize
         if is_visdom:
