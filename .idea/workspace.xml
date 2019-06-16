@@ -1,0 +1,909 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bbb777f5-3a45-4732-9d69-999880e4df32" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_False" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.100000_is_rnn:_False" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.200000_is_rnn:_False" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.300000_is_rnn:_False" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.400000_is_rnn:_False" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.500000_is_rnn:_False" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.100000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.200000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.300000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.600000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.700000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.000000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.100000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.200000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.300000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.400000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.500000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/final_results/rnn_25/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.600000_is_rnn:_True" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graphs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train_atari.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_atari.py" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1752971562">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="26" />
+          <entry key="project.open.time.0" value="20" />
+          <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.2" value="7" />
+          <entry key="project.open.time.3" value="8" />
+          <entry key="project.open.time.4" value="5" />
+          <entry key="project.opened" value="42" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="000000_is_rnn:_False" value="3" />
+          <entry key="000000_is_rnn:_True" value="2" />
+          <entry key="0001" value="2" />
+          <entry key="00025_batch_16_traj_len_10" value="1" />
+          <entry key="00025_batch_32_traj_len_1" value="1" />
+          <entry key="00025_batch_32_traj_len_10" value="1" />
+          <entry key="00025_batch_32_traj_len_25" value="1" />
+          <entry key="00025_batch_32_traj_len_5" value="1" />
+          <entry key="00025_batch_32_traj_len_50" value="2" />
+          <entry key="001" value="4" />
+          <entry key="001_batch_16_traj_len_50" value="1" />
+          <entry key="001_target_update_freq_1500" value="3" />
+          <entry key="01" value="2" />
+          <entry key="1" value="10" />
+          <entry key="100000_is_rnn:_False" value="1" />
+          <entry key="200000_is_rnn:_False" value="1" />
+          <entry key="200000_is_rnn:_True" value="2" />
+          <entry key="300000_is_rnn:_True" value="2" />
+          <entry key="600000_is_rnn:_False" value="1" />
+          <entry key="batch_128" value="2" />
+          <entry key="batch_256" value="2" />
+          <entry key="batch_32" value="2" />
+          <entry key="batch_512" value="1" />
+          <entry key="batch_64" value="2" />
+          <entry key="ipynb" value="1" />
+          <entry key="log" value="1" />
+          <entry key="lr_1e-05" value="1" />
+          <entry key="lr_1e-05_batch_16_traj_len_10" value="2" />
+          <entry key="lr_1e-05_batch_32_traj_len_10" value="2" />
+          <entry key="lr_1e-05_batch_32_traj_len_30" value="2" />
+          <entry key="py" value="47" />
+          <entry key="target_update_freq_1000" value="2" />
+          <entry key="target_update_freq_1500" value="2" />
+          <entry key="target_update_freq_250" value="1" />
+          <entry key="target_update_freq_500" value="1" />
+          <entry key="target_update_freq_750" value="1" />
+          <entry key="visdom" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="IPNB" value="1" />
+          <entry key="PLAIN_TEXT" value="65" />
+          <entry key="Python" value="48" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="Python Console" value="347" />
+          <entry key="dummy" value="21" />
+          <entry key="py" value="9186" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="21" />
+          <entry key="Python" value="9533" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/train_gridworld.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1350">
+              <caret line="90" column="28" selection-start-line="90" selection-start-column="28" selection-end-line="90" selection-end-column="28" />
+              <folding>
+                <element signature="e#1#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/graphs.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="24" column="36" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+                <marker date="1560688204817" expanded="true" signature="159:163" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_True">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4631" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.200000_is_rnn:_False">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4631" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_False">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_False">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="16" column="44" lean-forward="true" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.100000_is_rnn:_False">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4631" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/train_atari.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4662">
+              <caret line="275" column="23" selection-start-line="275" selection-start-column="23" selection-end-line="275" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/orig_atari_dqn.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1116">
+              <caret line="74" column="34" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DRQN_atari.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1476">
+              <caret line="94" selection-start-line="94" selection-end-line="94" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>hidden_layer</find>
+      <find>f</find>
+      <find>output_dir</find>
+      <find>MaxNumOfStepsPerGame</find>
+      <find>transition</find>
+      <find>view</find>
+      <find>memory</find>
+      <find>max</find>
+      <find>backward</find>
+      <find>maxsteps</find>
+      <find>hidden</find>
+      <find>eval_episodes</find>
+      <find>startDelay</find>
+      <find>pad</find>
+      <find>device</find>
+      <find>in_size</find>
+      <find>dtype</find>
+      <find>hidden_dim</find>
+      <find>episode_transitions</find>
+      <find>batch_first</find>
+      <find>repla</find>
+      <find>show</find>
+      <find>is_visdom</find>
+      <find>init_</find>
+      <find>visdom</find>
+      <find>eps</find>
+      <find>is_rnn</find>
+      <find>atary</find>
+      <find>.step</find>
+      <find>save</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>:</replace>
+      <replace>:random.randint(0,</replace>
+      <replace>random.randint(0,</replace>
+      <replace>inner_linear_dim</replace>
+      <replace>output_path</replace>
+      <replace>maxSteps</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/DQN.py" />
+        <option value="$PROJECT_DIR$/GridWorldSimon.py" />
+        <option value="$PROJECT_DIR$/DRQN.py" />
+        <option value="$PROJECT_DIR$/train.py" />
+        <option value="$PROJECT_DIR$/train_gridworld.py" />
+        <option value="$PROJECT_DIR$/DRQN_atary.py" />
+        <option value="$PROJECT_DIR$/train_atary.py" />
+        <option value="$PROJECT_DIR$/DRQN_atari.py" />
+        <option value="$PROJECT_DIR$/train_atari.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/graphs.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="1204" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="vanillaDQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vanillaDQN" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vanillaDQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vanillaDQN" type="462c0819:PsiDirectoryNode" />
+              <item name="atary_lstm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vanillaDQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vanillaDQN" type="462c0819:PsiDirectoryNode" />
+              <item name="final_results" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vanillaDQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vanillaDQN" type="462c0819:PsiDirectoryNode" />
+              <item name="final_results" type="462c0819:PsiDirectoryNode" />
+              <item name="no_rnn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vanillaDQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vanillaDQN" type="462c0819:PsiDirectoryNode" />
+              <item name="final_results" type="462c0819:PsiDirectoryNode" />
+              <item name="rnn_10" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vanillaDQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/train_gridworld.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/final_results" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.plotting">
+    <configuration name="gridworld" type="PythonConfigurationType" factoryName="Python">
+      <module name="chenDQN" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../../pythonEnvs/flairEnv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train_gridworld.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python">
+      <module name="chenDQN" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../../pythonEnvs/flairEnv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="plotting" type="PythonConfigurationType" factoryName="Python">
+      <module name="chenDQN" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../../pythonEnvs/flairEnv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/graphs.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.gridworld" />
+      <item itemvalue="Python.plotting" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bbb777f5-3a45-4732-9d69-999880e4df32" name="Default Changelist" comment="" />
+      <created>1546335900167</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1546335900167</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="64" y="-11" width="1857" height="1212" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.50272924" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32899627" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.40799257" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3633829" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32992566" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32899627" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.25929368" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32899627" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/DQN.py</url>
+          <line>61</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/graphs.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>gym.Space.</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>gym.spaces</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="breakpointCondition">
+      <expression>
+        <expression-string>len(self.full_episodes_memory) == self.full_episodes_capacity</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>not is_batch</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>isinstance(batch_state[0],np.ndarray) == False</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>isinstance(batch_state[0],np.ndarray)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>type(batch_state[0]) != tuple</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>type(batch_state) != tuple</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>expected_hidden_size[1]&gt;32</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(env.score_vec) == 850</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(env.score_vec) == 750</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(env.score_vec) == 500</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>fields[1]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_next_state[0][0],batch_next_state[23][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_next_state[0][0],batch_next_state[3][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_next_state[0][0],batch_next_state[1][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_next_state[0][0],batch_next_state[0][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_state[0][0],batch_state[0][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_state[0][0],batch_state[2][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.array_equal(batch_state[0][0],batch_state[1][0])</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>batch_state[0][0]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/lr/lr_0.01">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10138" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/lr/lr_0.0001">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10138" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/lr/lr_0.1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1728" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/best_config/batch_128__lr_0.001_target_update_freq_1500">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-106852" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/batch_size/batch_128">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10138" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/batch_size/batch_64">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10138" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/batch_size/batch_32">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10138" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_2_fruit/batch_size/batch_256">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="575" column="28" lean-forward="true" selection-start-line="575" selection-start-column="28" selection-end-line="575" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MyVisdom.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pythonEnvs/flairEnv/lib/python3.6/site-packages/torch/nn/functional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="37602">
+          <caret line="2105" selection-start-line="2105" selection-end-line="2105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW 1 - DQN.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/layers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="12" column="40" lean-forward="true" selection-start-line="12" selection-start-column="40" selection-end-line="12" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DQN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GridWorldSimon.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5688">
+          <caret line="322" selection-start-line="322" selection-end-line="322" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pythonEnvs/flairEnv/lib/python3.6/site-packages/visdom/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5094">
+          <caret line="310" selection-start-line="310" selection-end-line="310" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pythonEnvs/flairEnv/lib/python3.6/site-packages/torch/nn/modules/container.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5544">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/warnings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7200">
+          <caret line="400" selection-start-line="400" selection-end-line="400" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pythonEnvs/flairEnv/lib/python3.6/site-packages/torch/nn/modules/rnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2340">
+          <caret line="139" selection-start-line="139" selection-end-line="139" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.001_batch_16_traj_len_50" />
+    <entry file="file://$PROJECT_DIR$/seqential_sampling/log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pythonEnvs/flairEnv/lib/python3.6/site-packages/torch/nn/modules/conv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5544">
+          <caret line="315" selection-start-line="315" selection-end-line="315" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5598">
+          <caret line="319" selection-start-line="319" selection-end-line="319" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_1e-05_batch_16_traj_len_10" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.00025_batch_32_traj_len_1" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.00025_batch_16_traj_len_10" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_1e-05_batch_32_traj_len_10" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.00025_batch_32_traj_len_5" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.00025_batch_32_traj_len_10" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.00025_batch_32_traj_len_25" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.00025_batch_32_traj_len_50" />
+    <entry file="file://$PROJECT_DIR$/DRQN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="20" column="31" lean-forward="true" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../pythonEnvs/flairEnv/lib/python3.6/site-packages/torch/nn/modules/module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="488" selection-start-line="488" selection-end-line="488" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_1e-05_batch_32_traj_len_30" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.300000_is_rnn:_True">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4472" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.200000_is_rnn:_True">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1177">
+          <caret line="285" lean-forward="true" selection-start-line="285" selection-end-line="285" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.200000_is_rnn:_True">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3942" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_25.000000_flickering_p_0.300000_is_rnn:_True">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.600000_is_rnn:_False" />
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_True">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2160" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="106" column="31" selection-start-line="106" selection-start-column="31" selection-end-line="106" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train_gridworld.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1350">
+          <caret line="90" column="28" selection-start-line="90" selection-start-column="28" selection-end-line="90" selection-end-column="28" />
+          <folding>
+            <element signature="e#1#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train_atari.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4662">
+          <caret line="275" column="23" selection-start-line="275" selection-start-column="23" selection-end-line="275" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/orig_atari_dqn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1116">
+          <caret line="74" column="34" selection-start-line="74" selection-start-column="34" selection-end-line="74" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DRQN_atari.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1476">
+          <caret line="94" selection-start-line="94" selection-end-line="94" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/graphs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="36" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+            <marker date="1560688204817" expanded="true" signature="159:163" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.100000_is_rnn:_False">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4631" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/final_results/no_rnn/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_False">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/final_results/rnn_10/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_True">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4631" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.200000_is_rnn:_False">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4631" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/atary_lstm/lr_0.000010_batch_size:_32.000000_trajectory_length:_10.000000_flickering_p_0.000000_is_rnn:_False">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="44" lean-forward="true" selection-start-line="16" selection-start-column="44" selection-end-line="16" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

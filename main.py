@@ -9,21 +9,23 @@ base_dir = os.path.abspath('results_2_fruit')
 if not os.path.exists(base_dir):
     os.mkdir(base_dir)
 
-is_run_atary_drqn = True
+is_run_atary_drqn = False
 is_run_drqn = False
 is_run_vanilla_dqn = True
 is_run_grid_search =  True
-is_run_best_results = False
+is_run_best_results = True
 
 
 # these are our default params.
 kwargs = {
     'mem_capacity': 100000,
+    'grid_dim': 3,
+    'num_of_obj': 1,
     'batch' : 32,
     'lr' : 0.00001,
     'double_dqn' : False,
     'gamma' : 0.99,
-    'num_steps' : 1400000,
+    'num_steps' : 1500000,
     'target_update_freq': 1,
     'learn_start' : 10000,
     'plot_update_freq' : 1000,
@@ -35,27 +37,35 @@ kwargs = {
     'l1_regularization': 0,
     'dropout' : 0,
     'maxSteps' : 30,
-    'is_visdom' : False,
+    'is_visdom' : True,
     'output_path' : base_dir,
     'write_mode' : 'w',
-    'is_rnn' : True,
+    'is_rnn' : False,
     'traj_len': 10,
     'hidden_dim': 256,
     'lstm_layers': 1,
     'flickering_p': 0.2,
 }
 
+if is_run_atary_drqn:
+    for is_rnn in [True]:
+        for flickering_p in [0.6,0.7]:
+            for traj_len in [25]:
+                kwargs['is_rnn'] = is_rnn
+                kwargs['traj_len'] = traj_len
+                kwargs['flickering_p'] = flickering_p
+                print("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f} flickering p {:f} is_rnn: {:s}".format(kwargs['lr'],
+                                                                 kwargs['batch'], kwargs['traj_len'], kwargs['flickering_p'], str(kwargs['is_rnn'])))
+                print(datetime.datetime.now())
+                output_dir = os.path.abspath('atary_lstm')
+                kwargs['output_path'] = output_dir + "/lr_{:f}_batch_size:_{:f}_trajectory_length:_{:f}_flickering_p_{:f}_is_rnn:_{:s}".format(kwargs['lr'],
+                                                                 kwargs['batch'], kwargs['traj_len'], kwargs['flickering_p'], str(kwargs['is_rnn']))
+                result = train_atari.train_atari_lstm(**kwargs)
 
-print("start training drqn. lr: {:f} batch size: {:f} trajectory length: {:f}".format(kwargs['lr'], kwargs['batch'], kwargs['traj_len']))
-print(datetime.datetime.now())
-output_dir = os.path.abspath('atary_lstm')
-kwargs['output_path'] = output_dir + '/lr_' + str(kwargs['lr']) + '_batch_' + str(kwargs['batch']) + '_traj_len_' + str(kwargs['traj_len'])
-result = train_atari.train_atari_lstm(**kwargs)
 
 
 
-
-is_greed_search = False
+is_greed_search = True
 if is_greed_search:
 
     if is_run_atary_drqn:

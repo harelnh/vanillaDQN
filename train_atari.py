@@ -281,6 +281,8 @@ def train_atari_lstm(**kwargs):
     print('Run average reward: ' + str(tot_avg_reward))
     f.write('Run average reward: ' + str(tot_avg_reward) + '\n')
     f.close()
-    torch.save(network.state_dict(), 'drqn_' + str(tot_avg_reward))
+    model_path =  "model:_lr_{:f}_batch_size:_{:f}_trajectory_length:_{:f}_flickering_p_{:f}_is_rnn:_{:s}".format(kwargs['lr'],
+                                                             kwargs['batch'], kwargs['traj_len'], kwargs['flickering_p'], str(kwargs['is_rnn']))
+    torch.save(network.state_dict(), model_path + str(tot_avg_reward))
     return tot_avg_reward
 
