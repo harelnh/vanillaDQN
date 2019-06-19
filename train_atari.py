@@ -142,8 +142,7 @@ def train_atari_lstm(**kwargs):
         # with a chosen probability, screen is fully obscured (following the paper: https://arxiv.org/pdf/1507.06527.pdf)
         if decision(flickering_p):
             next_state = np.zeros(next_state.shape)
-            reward = 0
-            done = 0
+
 
         # after we made a step render it to visualize
         if is_visdom:

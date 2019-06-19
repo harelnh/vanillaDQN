@@ -9,11 +9,11 @@ base_dir = os.path.abspath('results_2_fruit')
 if not os.path.exists(base_dir):
     os.mkdir(base_dir)
 
-is_run_atary_drqn = False
-is_run_drqn = False
-is_run_vanilla_dqn = True
-is_run_grid_search =  True
-is_run_best_results = True
+is_run_atary_drqn = True
+is_run_drqn = True
+is_run_vanilla_dqn = False
+is_run_grid_search =  False
+is_run_best_results = False
 
 
 # these are our default params.
@@ -25,7 +25,7 @@ kwargs = {
     'lr' : 0.00001,
     'double_dqn' : False,
     'gamma' : 0.99,
-    'num_steps' : 1500000,
+    'num_steps' : 2000000,
     'target_update_freq': 1,
     'learn_start' : 10000,
     'plot_update_freq' : 1000,
@@ -44,13 +44,13 @@ kwargs = {
     'traj_len': 10,
     'hidden_dim': 256,
     'lstm_layers': 1,
-    'flickering_p': 0.2,
+    'flickering_p': 0,
 }
 
 if is_run_atary_drqn:
-    for is_rnn in [True]:
-        for flickering_p in [0.6,0.7]:
-            for traj_len in [25]:
+    for is_rnn in [False]:
+        for flickering_p in [0,0.1]:
+            for traj_len in [10]:
                 kwargs['is_rnn'] = is_rnn
                 kwargs['traj_len'] = traj_len
                 kwargs['flickering_p'] = flickering_p
