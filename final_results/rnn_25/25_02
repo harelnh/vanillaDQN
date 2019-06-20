@@ -1,0 +1,1188 @@
+/home/dotant/Desktop/Projects/PythonVirtualEnvs/PythonX/bin/python /home/dotant/Desktop/harel_rl_project/vanillaDQN/main.py
+start training drqn. lr: 0.000010 batch size: 32.000000 trajectory length: 25.000000 flickering p 0.200000 is_rnn: True
+2019-06-19 16:32:54.273872
+/home/dotant/Desktop/harel_rl_project/vanillaDQN/train_atari.py:129: UserWarning: volatile was removed and now has no effect. Use `with torch.no_grad():` instead.
+  q_value = network(Variable(torch.FloatTensor(np.float32(state)).unsqueeze(0).to(device), volatile=True))
+/home/dotant/Desktop/harel_rl_project/vanillaDQN/train_atari.py:173: UserWarning: volatile was removed and now has no effect. Use `with torch.no_grad():` instead.
+  batch_next_state = Variable(torch.FloatTensor(np.float32(batch_next_state)).to(device), volatile=True)
+loss is: 0.017420
+loss is: 0.020862
+loss is: 0.014034
+loss is: 0.017109
+/home/dotant/Desktop/harel_rl_project/vanillaDQN/train_atari.py:242: UserWarning: volatile was removed and now has no effect. Use `with torch.no_grad():` instead.
+  Variable(torch.FloatTensor(np.float32(eval_state)).unsqueeze(0).to(device), volatile=True))
+Step: 14000 Avg reward: -21.0
+loss is: 0.012571
+loss is: 0.009066
+loss is: 0.012223
+loss is: 0.007662
+loss is: 0.006372
+loss is: 0.008152
+loss is: 0.008446
+Step: 21000 Avg reward: -20.666666666666668
+loss is: 0.009336
+loss is: 0.011461
+loss is: 0.008456
+loss is: 0.010148
+loss is: 0.008278
+loss is: 0.008813
+loss is: 0.007855
+Step: 28000 Avg reward: -20.333333333333332
+loss is: 0.012119
+loss is: 0.012371
+loss is: 0.008198
+loss is: 0.008229
+loss is: 0.012295
+loss is: 0.010993
+loss is: 0.011051
+Step: 35000 Avg reward: -17.333333333333332
+loss is: 0.009414
+loss is: 0.007969
+loss is: 0.016486
+loss is: 0.008633
+loss is: 0.008854
+loss is: 0.010285
+loss is: 0.012898
+Step: 42000 Avg reward: -18.333333333333332
+loss is: 0.011888
+loss is: 0.009701
+loss is: 0.010776
+loss is: 0.012615
+loss is: 0.011417
+loss is: 0.012505
+loss is: 0.010805
+Step: 49000 Avg reward: -18.0
+loss is: 0.007114
+loss is: 0.008517
+loss is: 0.007549
+loss is: 0.007787
+loss is: 0.010421
+loss is: 0.008320
+loss is: 0.011174
+Step: 56000 Avg reward: -18.666666666666668
+loss is: 0.010512
+loss is: 0.009911
+loss is: 0.010903
+loss is: 0.012425
+loss is: 0.016122
+loss is: 0.007610
+loss is: 0.007856
+Step: 63000 Avg reward: -17.333333333333332
+loss is: 0.008991
+loss is: 0.011841
+loss is: 0.009363
+loss is: 0.009252
+loss is: 0.007675
+loss is: 0.008225
+loss is: 0.007821
+Step: 70000 Avg reward: -18.333333333333332
+loss is: 0.008568
+loss is: 0.009926
+loss is: 0.007971
+loss is: 0.007395
+loss is: 0.008845
+loss is: 0.008304
+loss is: 0.007170
+Step: 77000 Avg reward: -17.333333333333332
+loss is: 0.009948
+loss is: 0.008556
+loss is: 0.010145
+loss is: 0.008262
+loss is: 0.007179
+loss is: 0.014244
+loss is: 0.007462
+Step: 84000 Avg reward: -17.666666666666668
+loss is: 0.009936
+loss is: 0.006103
+loss is: 0.012442
+loss is: 0.006645
+loss is: 0.007988
+loss is: 0.008992
+loss is: 0.011342
+Step: 91000 Avg reward: -16.333333333333332
+loss is: 0.011222
+loss is: 0.009446
+loss is: 0.007041
+loss is: 0.008271
+loss is: 0.009842
+loss is: 0.011058
+loss is: 0.006575
+Step: 98000 Avg reward: -17.666666666666668
+loss is: 0.007919
+loss is: 0.007818
+loss is: 0.007109
+loss is: 0.008813
+loss is: 0.007734
+loss is: 0.006999
+loss is: 0.007963
+Step: 105000 Avg reward: -19.666666666666668
+loss is: 0.011257
+loss is: 0.007837
+loss is: 0.007282
+loss is: 0.010322
+loss is: 0.009744
+loss is: 0.007727
+loss is: 0.011293
+Step: 112000 Avg reward: -16.333333333333332
+loss is: 0.007852
+loss is: 0.008449
+loss is: 0.007996
+loss is: 0.009076
+loss is: 0.009950
+loss is: 0.006549
+loss is: 0.008329
+Step: 119000 Avg reward: -19.333333333333332
+loss is: 0.008294
+loss is: 0.006544
+loss is: 0.009245
+loss is: 0.006029
+loss is: 0.014402
+loss is: 0.006938
+loss is: 0.009166
+Step: 126000 Avg reward: -19.333333333333332
+loss is: 0.021446
+loss is: 0.008235
+loss is: 0.008349
+loss is: 0.008442
+loss is: 0.007433
+loss is: 0.005739
+loss is: 0.010567
+Step: 133000 Avg reward: -16.0
+loss is: 0.007173
+loss is: 0.008202
+loss is: 0.007992
+loss is: 0.007172
+loss is: 0.009642
+loss is: 0.006169
+loss is: 0.007354
+Step: 140000 Avg reward: -16.0
+loss is: 0.010690
+loss is: 0.008007
+loss is: 0.008632
+loss is: 0.011595
+loss is: 0.006153
+loss is: 0.008058
+loss is: 0.010928
+Step: 147000 Avg reward: -18.333333333333332
+loss is: 0.007441
+loss is: 0.006341
+loss is: 0.008618
+loss is: 0.012746
+loss is: 0.007159
+loss is: 0.007900
+loss is: 0.008041
+Step: 154000 Avg reward: -17.0
+loss is: 0.007561
+loss is: 0.007116
+loss is: 0.007457
+loss is: 0.007892
+loss is: 0.013303
+loss is: 0.008200
+loss is: 0.007131
+Step: 161000 Avg reward: -16.333333333333332
+loss is: 0.006669
+loss is: 0.008248
+loss is: 0.011257
+loss is: 0.009857
+loss is: 0.012114
+loss is: 0.006851
+loss is: 0.007019
+Step: 168000 Avg reward: -13.666666666666666
+loss is: 0.007393
+loss is: 0.008637
+loss is: 0.008440
+loss is: 0.007680
+loss is: 0.011064
+loss is: 0.010268
+loss is: 0.007885
+Step: 175000 Avg reward: -15.0
+loss is: 0.006321
+loss is: 0.007056
+loss is: 0.006748
+loss is: 0.011785
+loss is: 0.007444
+loss is: 0.007590
+loss is: 0.009407
+Step: 182000 Avg reward: -18.0
+loss is: 0.008498
+loss is: 0.007001
+loss is: 0.011965
+loss is: 0.010731
+loss is: 0.010753
+loss is: 0.013804
+loss is: 0.007362
+Step: 189000 Avg reward: -15.666666666666666
+loss is: 0.006601
+loss is: 0.005912
+loss is: 0.009010
+loss is: 0.010436
+loss is: 0.006069
+loss is: 0.007531
+loss is: 0.007451
+Step: 196000 Avg reward: -18.0
+loss is: 0.006012
+loss is: 0.009078
+loss is: 0.006438
+loss is: 0.008225
+loss is: 0.007434
+loss is: 0.009155
+loss is: 0.007454
+Step: 203000 Avg reward: -15.333333333333334
+loss is: 0.008197
+loss is: 0.008095
+loss is: 0.009755
+loss is: 0.008241
+loss is: 0.007749
+loss is: 0.009659
+loss is: 0.008732
+Step: 210000 Avg reward: -16.0
+loss is: 0.007511
+loss is: 0.007418
+loss is: 0.008640
+loss is: 0.007350
+loss is: 0.008338
+loss is: 0.005832
+loss is: 0.007360
+Step: 217000 Avg reward: -17.0
+loss is: 0.008185
+loss is: 0.007137
+loss is: 0.007591
+loss is: 0.007800
+loss is: 0.008431
+loss is: 0.008401
+loss is: 0.006507
+Step: 224000 Avg reward: -14.666666666666666
+loss is: 0.012252
+loss is: 0.006543
+loss is: 0.007640
+loss is: 0.005839
+loss is: 0.008073
+loss is: 0.005892
+loss is: 0.005828
+Step: 231000 Avg reward: -14.333333333333334
+loss is: 0.007045
+loss is: 0.009017
+loss is: 0.006775
+loss is: 0.006006
+loss is: 0.007484
+loss is: 0.006507
+loss is: 0.008521
+Step: 238000 Avg reward: -15.333333333333334
+loss is: 0.008943
+loss is: 0.006489
+loss is: 0.010570
+loss is: 0.008964
+loss is: 0.007788
+loss is: 0.005991
+loss is: 0.006301
+Step: 245000 Avg reward: -14.0
+loss is: 0.008159
+loss is: 0.006497
+loss is: 0.007783
+loss is: 0.007843
+loss is: 0.011970
+loss is: 0.005725
+loss is: 0.007978
+Step: 252000 Avg reward: -14.333333333333334
+loss is: 0.005755
+loss is: 0.006219
+loss is: 0.006611
+loss is: 0.007442
+loss is: 0.007226
+loss is: 0.006192
+loss is: 0.006792
+Step: 259000 Avg reward: -14.333333333333334
+loss is: 0.006301
+loss is: 0.008106
+loss is: 0.010921
+loss is: 0.009274
+loss is: 0.006097
+loss is: 0.007067
+loss is: 0.009793
+Step: 266000 Avg reward: -16.666666666666668
+loss is: 0.008980
+loss is: 0.006945
+loss is: 0.007258
+loss is: 0.012883
+loss is: 0.006007
+loss is: 0.006709
+loss is: 0.006713
+Step: 273000 Avg reward: -16.0
+loss is: 0.012620
+loss is: 0.008546
+loss is: 0.007808
+loss is: 0.008548
+loss is: 0.008148
+loss is: 0.008753
+loss is: 0.006284
+Step: 280000 Avg reward: -15.0
+loss is: 0.008178
+loss is: 0.008757
+loss is: 0.006753
+loss is: 0.006880
+loss is: 0.007465
+loss is: 0.007659
+loss is: 0.008532
+Step: 287000 Avg reward: -14.666666666666666
+loss is: 0.006337
+loss is: 0.008568
+loss is: 0.009295
+loss is: 0.009269
+loss is: 0.006594
+loss is: 0.009409
+loss is: 0.007674
+Step: 294000 Avg reward: -14.666666666666666
+loss is: 0.006480
+loss is: 0.008974
+loss is: 0.008774
+loss is: 0.008558
+loss is: 0.010611
+loss is: 0.007968
+loss is: 0.011348
+Step: 301000 Avg reward: -18.0
+loss is: 0.006878
+loss is: 0.008183
+loss is: 0.007815
+loss is: 0.007414
+loss is: 0.006737
+loss is: 0.010650
+loss is: 0.007971
+Step: 308000 Avg reward: -16.0
+loss is: 0.006792
+loss is: 0.006400
+loss is: 0.006007
+loss is: 0.007059
+loss is: 0.007390
+loss is: 0.008955
+loss is: 0.008707
+Step: 315000 Avg reward: -16.0
+loss is: 0.008928
+loss is: 0.007276
+loss is: 0.007896
+loss is: 0.007190
+loss is: 0.012656
+loss is: 0.007227
+loss is: 0.008427
+Step: 322000 Avg reward: -17.0
+loss is: 0.008904
+loss is: 0.008905
+loss is: 0.006301
+loss is: 0.007035
+loss is: 0.007500
+loss is: 0.007395
+loss is: 0.008445
+Step: 329000 Avg reward: -15.0
+loss is: 0.007667
+loss is: 0.006694
+loss is: 0.007095
+loss is: 0.011007
+loss is: 0.007135
+loss is: 0.007632
+loss is: 0.007654
+Step: 336000 Avg reward: -15.333333333333334
+loss is: 0.006738
+loss is: 0.008457
+loss is: 0.007293
+loss is: 0.009894
+loss is: 0.008229
+loss is: 0.007119
+loss is: 0.010095
+Step: 343000 Avg reward: -18.0
+loss is: 0.007189
+loss is: 0.007522
+loss is: 0.006475
+loss is: 0.008904
+loss is: 0.010572
+loss is: 0.007274
+loss is: 0.008121
+Step: 350000 Avg reward: -14.333333333333334
+loss is: 0.007096
+loss is: 0.014608
+loss is: 0.007104
+loss is: 0.008863
+loss is: 0.007943
+loss is: 0.009536
+loss is: 0.009253
+Step: 357000 Avg reward: -17.666666666666668
+loss is: 0.008070
+loss is: 0.017221
+loss is: 0.007023
+loss is: 0.007574
+loss is: 0.007599
+loss is: 0.017792
+loss is: 0.007605
+Step: 364000 Avg reward: -15.0
+loss is: 0.008966
+loss is: 0.022885
+loss is: 0.011820
+loss is: 0.010076
+loss is: 0.016025
+loss is: 0.008316
+loss is: 0.007747
+Step: 371000 Avg reward: -14.0
+loss is: 0.007907
+loss is: 0.011488
+loss is: 0.008551
+loss is: 0.006963
+loss is: 0.011576
+loss is: 0.008698
+loss is: 0.008243
+Step: 378000 Avg reward: -13.666666666666666
+loss is: 0.008803
+loss is: 0.010788
+loss is: 0.010488
+loss is: 0.008209
+loss is: 0.008528
+loss is: 0.009409
+loss is: 0.007662
+Step: 385000 Avg reward: -16.0
+loss is: 0.009298
+loss is: 0.009246
+loss is: 0.007185
+loss is: 0.009908
+loss is: 0.009626
+loss is: 0.008918
+loss is: 0.007399
+Step: 392000 Avg reward: -16.333333333333332
+loss is: 0.010268
+loss is: 0.007739
+loss is: 0.007591
+loss is: 0.008881
+loss is: 0.009790
+loss is: 0.008237
+loss is: 0.011024
+Step: 399000 Avg reward: -17.666666666666668
+loss is: 0.008569
+loss is: 0.009750
+loss is: 0.010133
+loss is: 0.009597
+loss is: 0.006369
+loss is: 0.008498
+loss is: 0.012314
+Step: 406000 Avg reward: -14.0
+loss is: 0.007483
+loss is: 0.010191
+loss is: 0.008278
+loss is: 0.010684
+loss is: 0.010956
+loss is: 0.009615
+loss is: 0.008676
+Step: 413000 Avg reward: -19.0
+loss is: 0.008097
+loss is: 0.008210
+loss is: 0.015474
+loss is: 0.008935
+loss is: 0.016045
+loss is: 0.009048
+loss is: 0.008832
+Step: 420000 Avg reward: -15.0
+loss is: 0.010057
+loss is: 0.014472
+loss is: 0.007835
+loss is: 0.010206
+loss is: 0.008559
+loss is: 0.010016
+loss is: 0.010536
+Step: 427000 Avg reward: -18.666666666666668
+loss is: 0.011830
+loss is: 0.007923
+loss is: 0.010163
+loss is: 0.011413
+loss is: 0.008212
+loss is: 0.010382
+loss is: 0.009830
+Step: 434000 Avg reward: -17.666666666666668
+loss is: 0.010832
+loss is: 0.008744
+loss is: 0.009123
+loss is: 0.010707
+loss is: 0.008907
+loss is: 0.010629
+loss is: 0.008419
+Step: 441000 Avg reward: -17.0
+loss is: 0.007843
+loss is: 0.010731
+loss is: 0.011660
+loss is: 0.009297
+loss is: 0.009320
+loss is: 0.010298
+loss is: 0.010616
+Step: 448000 Avg reward: -15.0
+loss is: 0.009827
+loss is: 0.008949
+loss is: 0.010250
+loss is: 0.012380
+loss is: 0.009351
+loss is: 0.008228
+loss is: 0.010125
+Step: 455000 Avg reward: -17.333333333333332
+loss is: 0.009397
+loss is: 0.013609
+loss is: 0.011554
+loss is: 0.009867
+loss is: 0.011920
+loss is: 0.011302
+loss is: 0.011506
+Step: 462000 Avg reward: -13.333333333333334
+loss is: 0.009593
+loss is: 0.008011
+loss is: 0.008959
+loss is: 0.013017
+loss is: 0.008993
+loss is: 0.007701
+loss is: 0.008718
+Step: 469000 Avg reward: -15.333333333333334
+loss is: 0.009520
+loss is: 0.008796
+loss is: 0.009709
+loss is: 0.014522
+loss is: 0.010486
+loss is: 0.009490
+loss is: 0.010448
+Step: 476000 Avg reward: -15.0
+loss is: 0.009450
+loss is: 0.013908
+loss is: 0.010636
+loss is: 0.009373
+loss is: 0.011379
+loss is: 0.009895
+loss is: 0.011424
+Step: 483000 Avg reward: -14.0
+loss is: 0.009611
+loss is: 0.018443
+loss is: 0.011433
+loss is: 0.011231
+loss is: 0.009279
+loss is: 0.010402
+loss is: 0.011498
+Step: 490000 Avg reward: -14.333333333333334
+loss is: 0.011176
+loss is: 0.011942
+loss is: 0.010895
+loss is: 0.010786
+loss is: 0.011677
+loss is: 0.008849
+loss is: 0.011557
+Step: 497000 Avg reward: -13.666666666666666
+loss is: 0.012793
+loss is: 0.008370
+loss is: 0.009856
+loss is: 0.009529
+loss is: 0.009745
+loss is: 0.013648
+loss is: 0.011871
+Step: 504000 Avg reward: -14.666666666666666
+loss is: 0.008244
+loss is: 0.013432
+loss is: 0.010459
+loss is: 0.011201
+loss is: 0.011520
+loss is: 0.010125
+loss is: 0.012154
+Step: 511000 Avg reward: -17.333333333333332
+loss is: 0.010291
+loss is: 0.011275
+loss is: 0.012752
+loss is: 0.012853
+loss is: 0.010258
+loss is: 0.017236
+loss is: 0.009203
+Step: 518000 Avg reward: -13.666666666666666
+loss is: 0.011756
+loss is: 0.010199
+loss is: 0.008334
+loss is: 0.011680
+loss is: 0.011864
+loss is: 0.010572
+loss is: 0.012011
+Step: 525000 Avg reward: -13.333333333333334
+loss is: 0.011684
+loss is: 0.010129
+loss is: 0.008757
+loss is: 0.009735
+loss is: 0.010540
+loss is: 0.011651
+loss is: 0.011365
+Step: 532000 Avg reward: -13.666666666666666
+loss is: 0.011222
+loss is: 0.009262
+loss is: 0.013084
+loss is: 0.013969
+loss is: 0.009007
+loss is: 0.009791
+loss is: 0.013819
+Step: 539000 Avg reward: -12.666666666666666
+loss is: 0.010138
+loss is: 0.009797
+loss is: 0.014110
+loss is: 0.010032
+loss is: 0.011998
+loss is: 0.012025
+loss is: 0.013123
+Step: 546000 Avg reward: -13.666666666666666
+loss is: 0.008947
+loss is: 0.008551
+loss is: 0.010369
+loss is: 0.011499
+loss is: 0.008800
+loss is: 0.011858
+loss is: 0.009651
+Step: 553000 Avg reward: -11.666666666666666
+loss is: 0.010628
+loss is: 0.010717
+loss is: 0.012151
+loss is: 0.010729
+loss is: 0.012720
+loss is: 0.009349
+loss is: 0.010980
+Step: 560000 Avg reward: -13.333333333333334
+loss is: 0.013756
+loss is: 0.011339
+loss is: 0.008850
+loss is: 0.010209
+loss is: 0.009294
+loss is: 0.011582
+loss is: 0.011291
+Step: 567000 Avg reward: -12.333333333333334
+loss is: 0.012151
+loss is: 0.009515
+loss is: 0.010558
+loss is: 0.011288
+loss is: 0.018348
+loss is: 0.011083
+loss is: 0.012340
+Step: 574000 Avg reward: -13.0
+loss is: 0.010773
+loss is: 0.011873
+loss is: 0.010366
+loss is: 0.010900
+loss is: 0.009936
+loss is: 0.009123
+loss is: 0.011197
+Step: 581000 Avg reward: -10.333333333333334
+loss is: 0.012894
+loss is: 0.009664
+loss is: 0.011708
+loss is: 0.016134
+loss is: 0.014533
+loss is: 0.008765
+loss is: 0.012386
+Step: 588000 Avg reward: -5.333333333333333
+loss is: 0.010587
+loss is: 0.009086
+loss is: 0.010497
+loss is: 0.012507
+loss is: 0.012441
+loss is: 0.013301
+loss is: 0.011744
+Step: 595000 Avg reward: -14.666666666666666
+loss is: 0.010860
+loss is: 0.011742
+loss is: 0.009068
+loss is: 0.012445
+loss is: 0.011670
+loss is: 0.013075
+loss is: 0.013747
+Step: 602000 Avg reward: -10.0
+loss is: 0.009990
+loss is: 0.009354
+loss is: 0.011906
+loss is: 0.012347
+loss is: 0.009513
+loss is: 0.016805
+loss is: 0.011793
+Step: 609000 Avg reward: -10.333333333333334
+loss is: 0.010630
+loss is: 0.011012
+loss is: 0.008450
+loss is: 0.009328
+loss is: 0.011547
+loss is: 0.012718
+loss is: 0.010563
+Step: 616000 Avg reward: -10.666666666666666
+loss is: 0.009993
+loss is: 0.011267
+loss is: 0.010456
+loss is: 0.014420
+loss is: 0.009154
+loss is: 0.010081
+loss is: 0.011159
+Step: 623000 Avg reward: -16.666666666666668
+loss is: 0.008951
+loss is: 0.009640
+loss is: 0.010651
+loss is: 0.014780
+loss is: 0.012531
+loss is: 0.009008
+loss is: 0.007390
+Step: 630000 Avg reward: -14.0
+loss is: 0.010887
+loss is: 0.010534
+loss is: 0.008513
+loss is: 0.012251
+loss is: 0.010375
+loss is: 0.008947
+loss is: 0.010521
+Step: 637000 Avg reward: -10.666666666666666
+loss is: 0.011796
+loss is: 0.009760
+loss is: 0.011299
+loss is: 0.011596
+loss is: 0.013663
+loss is: 0.010651
+loss is: 0.009062
+Step: 644000 Avg reward: -9.0
+loss is: 0.010741
+loss is: 0.010870
+loss is: 0.012358
+loss is: 0.011425
+loss is: 0.009766
+loss is: 0.010562
+loss is: 0.012343
+Step: 651000 Avg reward: -14.333333333333334
+loss is: 0.007757
+loss is: 0.008862
+loss is: 0.009961
+loss is: 0.012740
+loss is: 0.008904
+loss is: 0.010024
+loss is: 0.008262
+Step: 658000 Avg reward: -10.0
+loss is: 0.008837
+loss is: 0.010380
+loss is: 0.009729
+loss is: 0.012083
+loss is: 0.010808
+loss is: 0.012805
+loss is: 0.009089
+Step: 665000 Avg reward: -13.666666666666666
+loss is: 0.011505
+loss is: 0.010237
+loss is: 0.010766
+loss is: 0.013243
+loss is: 0.009638
+loss is: 0.010049
+loss is: 0.010662
+Step: 672000 Avg reward: -13.666666666666666
+loss is: 0.008849
+loss is: 0.008816
+loss is: 0.011372
+loss is: 0.011257
+loss is: 0.008903
+loss is: 0.010085
+loss is: 0.008965
+Step: 679000 Avg reward: -11.0
+loss is: 0.009714
+loss is: 0.009913
+loss is: 0.008663
+loss is: 0.011846
+loss is: 0.009359
+loss is: 0.008343
+loss is: 0.010157
+Step: 686000 Avg reward: -11.0
+loss is: 0.008989
+loss is: 0.011961
+loss is: 0.012815
+loss is: 0.010857
+loss is: 0.011747
+loss is: 0.010852
+loss is: 0.008518
+Step: 693000 Avg reward: -6.666666666666667
+loss is: 0.011577
+loss is: 0.009854
+loss is: 0.008506
+loss is: 0.010109
+loss is: 0.009524
+loss is: 0.010659
+loss is: 0.009777
+Step: 700000 Avg reward: -8.0
+loss is: 0.008717
+loss is: 0.010537
+loss is: 0.010466
+loss is: 0.010517
+loss is: 0.007838
+loss is: 0.010834
+loss is: 0.010047
+Step: 707000 Avg reward: -10.333333333333334
+loss is: 0.014455
+loss is: 0.008877
+loss is: 0.014571
+loss is: 0.010379
+loss is: 0.009141
+loss is: 0.010789
+loss is: 0.011769
+Step: 714000 Avg reward: -9.333333333333334
+loss is: 0.013927
+loss is: 0.010350
+loss is: 0.008428
+loss is: 0.009899
+loss is: 0.011374
+loss is: 0.009829
+loss is: 0.010162
+Step: 721000 Avg reward: -9.0
+loss is: 0.010012
+loss is: 0.010307
+loss is: 0.012988
+loss is: 0.009612
+loss is: 0.011971
+loss is: 0.011142
+loss is: 0.011112
+Step: 728000 Avg reward: -11.666666666666666
+loss is: 0.009606
+loss is: 0.012797
+loss is: 0.010502
+loss is: 0.010237
+loss is: 0.011665
+loss is: 0.010948
+loss is: 0.012204
+Step: 735000 Avg reward: -11.0
+loss is: 0.016856
+loss is: 0.012819
+loss is: 0.010978
+loss is: 0.010231
+loss is: 0.012416
+loss is: 0.008565
+loss is: 0.011843
+Step: 742000 Avg reward: -10.333333333333334
+loss is: 0.012341
+loss is: 0.011615
+loss is: 0.011112
+loss is: 0.009496
+loss is: 0.010194
+loss is: 0.010613
+loss is: 0.009165
+Step: 749000 Avg reward: -8.333333333333334
+loss is: 0.012423
+loss is: 0.010979
+loss is: 0.012561
+loss is: 0.012059
+loss is: 0.013412
+loss is: 0.013703
+loss is: 0.011254
+Step: 756000 Avg reward: -7.666666666666667
+loss is: 0.012222
+loss is: 0.010867
+loss is: 0.009491
+loss is: 0.009843
+loss is: 0.011631
+loss is: 0.010759
+loss is: 0.012557
+Step: 763000 Avg reward: -12.0
+loss is: 0.013425
+loss is: 0.011495
+loss is: 0.009671
+loss is: 0.009976
+loss is: 0.008823
+loss is: 0.011374
+loss is: 0.009263
+Step: 770000 Avg reward: -6.333333333333333
+loss is: 0.011331
+loss is: 0.009203
+loss is: 0.010929
+loss is: 0.008507
+loss is: 0.013304
+loss is: 0.014276
+loss is: 0.010558
+Step: 777000 Avg reward: 2.0
+loss is: 0.010741
+loss is: 0.007910
+loss is: 0.010737
+loss is: 0.010831
+loss is: 0.009727
+loss is: 0.009993
+loss is: 0.013289
+Step: 784000 Avg reward: -5.0
+loss is: 0.012301
+loss is: 0.010390
+loss is: 0.009269
+loss is: 0.010027
+loss is: 0.008116
+loss is: 0.007800
+loss is: 0.008804
+Step: 791000 Avg reward: -11.333333333333334
+loss is: 0.012007
+loss is: 0.010437
+loss is: 0.011625
+loss is: 0.010958
+loss is: 0.008750
+loss is: 0.010154
+loss is: 0.011818
+Step: 798000 Avg reward: -0.6666666666666666
+loss is: 0.009137
+loss is: 0.011224
+loss is: 0.012985
+loss is: 0.009829
+loss is: 0.011456
+loss is: 0.011819
+loss is: 0.010102
+Step: 805000 Avg reward: -5.666666666666667
+loss is: 0.009045
+loss is: 0.010976
+loss is: 0.010477
+loss is: 0.011317
+loss is: 0.013437
+loss is: 0.008632
+loss is: 0.010767
+Step: 812000 Avg reward: -11.333333333333334
+loss is: 0.011697
+loss is: 0.010828
+loss is: 0.010929
+loss is: 0.010015
+loss is: 0.008317
+loss is: 0.008729
+loss is: 0.009289
+Step: 819000 Avg reward: -9.333333333333334
+loss is: 0.011409
+loss is: 0.011954
+loss is: 0.013201
+loss is: 0.009875
+loss is: 0.008995
+loss is: 0.012608
+loss is: 0.007975
+Step: 826000 Avg reward: -2.3333333333333335
+loss is: 0.008435
+loss is: 0.010014
+loss is: 0.010129
+loss is: 0.010636
+loss is: 0.011352
+loss is: 0.011875
+loss is: 0.010525
+Step: 833000 Avg reward: -10.0
+loss is: 0.011363
+loss is: 0.011621
+loss is: 0.011624
+loss is: 0.011685
+loss is: 0.011766
+loss is: 0.011167
+loss is: 0.011351
+Step: 840000 Avg reward: -7.666666666666667
+loss is: 0.009884
+loss is: 0.011716
+loss is: 0.012196
+loss is: 0.010395
+loss is: 0.011654
+loss is: 0.014796
+loss is: 0.009722
+Step: 847000 Avg reward: -9.666666666666666
+loss is: 0.012220
+loss is: 0.014421
+loss is: 0.010769
+loss is: 0.015241
+loss is: 0.010854
+loss is: 0.010650
+loss is: 0.010016
+Step: 854000 Avg reward: -7.0
+loss is: 0.010549
+loss is: 0.012287
+loss is: 0.009667
+loss is: 0.008984
+loss is: 0.013035
+loss is: 0.012227
+loss is: 0.011231
+Step: 861000 Avg reward: -7.333333333333333
+loss is: 0.011027
+loss is: 0.011511
+loss is: 0.012173
+loss is: 0.010277
+loss is: 0.010744
+loss is: 0.010226
+loss is: 0.010117
+Step: 868000 Avg reward: -8.333333333333334
+loss is: 0.010515
+loss is: 0.011562
+loss is: 0.016063
+loss is: 0.011180
+loss is: 0.012709
+loss is: 0.011743
+loss is: 0.008120
+Step: 875000 Avg reward: -2.6666666666666665
+loss is: 0.012743
+loss is: 0.010831
+loss is: 0.011634
+loss is: 0.009229
+loss is: 0.012622
+loss is: 0.011173
+loss is: 0.013294
+Step: 882000 Avg reward: 2.3333333333333335
+loss is: 0.011907
+loss is: 0.009370
+loss is: 0.011050
+loss is: 0.013348
+loss is: 0.011197
+loss is: 0.011044
+loss is: 0.009395
+Step: 889000 Avg reward: -9.666666666666666
+loss is: 0.014225
+loss is: 0.013500
+loss is: 0.009708
+loss is: 0.010894
+loss is: 0.015502
+loss is: 0.010535
+loss is: 0.009579
+Step: 896000 Avg reward: -6.333333333333333
+loss is: 0.014681
+loss is: 0.015810
+loss is: 0.011898
+loss is: 0.010394
+loss is: 0.011343
+loss is: 0.014590
+loss is: 0.009884
+Step: 903000 Avg reward: -12.0
+loss is: 0.011989
+loss is: 0.014848
+loss is: 0.011998
+loss is: 0.012041
+loss is: 0.014183
+loss is: 0.013429
+loss is: 0.011725
+Step: 910000 Avg reward: 0.3333333333333333
+loss is: 0.009293
+loss is: 0.010011
+loss is: 0.011139
+loss is: 0.012813
+loss is: 0.011911
+loss is: 0.010658
+loss is: 0.011530
+Step: 917000 Avg reward: -6.0
+loss is: 0.008931
+loss is: 0.010478
+loss is: 0.008037
+loss is: 0.011419
+loss is: 0.014053
+loss is: 0.010867
+loss is: 0.013384
+Step: 924000 Avg reward: -8.333333333333334
+loss is: 0.012442
+loss is: 0.012056
+loss is: 0.011914
+loss is: 0.013654
+loss is: 0.010962
+loss is: 0.014291
+loss is: 0.010916
+Step: 931000 Avg reward: -7.666666666666667
+loss is: 0.015388
+loss is: 0.011093
+loss is: 0.011022
+loss is: 0.014290
+loss is: 0.009921
+loss is: 0.011694
+loss is: 0.013561
+Step: 938000 Avg reward: -3.6666666666666665
+loss is: 0.010387
+loss is: 0.011525
+loss is: 0.008587
+loss is: 0.010413
+loss is: 0.015948
+loss is: 0.010960
+loss is: 0.012073
+Step: 945000 Avg reward: -6.333333333333333
+loss is: 0.011429
+loss is: 0.012296
+loss is: 0.015824
+loss is: 0.010689
+loss is: 0.012597
+loss is: 0.012229
+loss is: 0.011877
+Step: 952000 Avg reward: -3.3333333333333335
+loss is: 0.011231
+loss is: 0.014586
+loss is: 0.012347
+loss is: 0.012329
+loss is: 0.015092
+loss is: 0.011707
+loss is: 0.011832
+Step: 959000 Avg reward: -8.0
+loss is: 0.011682
+loss is: 0.011856
+loss is: 0.011325
+loss is: 0.010904
+loss is: 0.009980
+loss is: 0.011010
+loss is: 0.013677
+Step: 966000 Avg reward: -3.6666666666666665
+loss is: 0.011255
+loss is: 0.012457
+loss is: 0.010597
+loss is: 0.010258
+loss is: 0.017236
+loss is: 0.012408
+loss is: 0.010706
+Step: 973000 Avg reward: -2.3333333333333335
+loss is: 0.012086
+loss is: 0.010946
+loss is: 0.010556
+loss is: 0.010772
+loss is: 0.013490
+loss is: 0.012519
+loss is: 0.015747
+Step: 980000 Avg reward: 0.3333333333333333
+loss is: 0.011694
+loss is: 0.008971
+loss is: 0.014233
+loss is: 0.012945
+loss is: 0.011863
+loss is: 0.011909
+loss is: 0.013473
+Step: 987000 Avg reward: -6.666666666666667
+loss is: 0.011248
+loss is: 0.012120
+loss is: 0.011017
+loss is: 0.008658
+loss is: 0.011628
+loss is: 0.014087
+loss is: 0.014769
+Step: 994000 Avg reward: -8.666666666666666
+loss is: 0.009063
+loss is: 0.014852
+loss is: 0.010576
+loss is: 0.015228
+loss is: 0.012666
+loss is: 0.011232
+loss is: 0.012144
+Step: 1001000 Avg reward: -9.333333333333334
+loss is: 0.013464
+loss is: 0.011909
+loss is: 0.013810
+loss is: 0.010794
+loss is: 0.011844
+loss is: 0.010812
+loss is: 0.010068
+Step: 1008000 Avg reward: -10.333333333333334
+loss is: 0.011161
+loss is: 0.010691
+loss is: 0.010493
+loss is: 0.010656
+loss is: 0.016791
+loss is: 0.013821
+loss is: 0.011025
+Step: 1015000 Avg reward: -9.0
+loss is: 0.011767
+loss is: 0.013188
+loss is: 0.012140
+loss is: 0.015401
+loss is: 0.012607
+loss is: 0.009097
+loss is: 0.010693
+Step: 1022000 Avg reward: -7.666666666666667
+loss is: 0.011676
+loss is: 0.011154
+loss is: 0.012670
+loss is: 0.011050
+loss is: 0.012114
+loss is: 0.012643
+loss is: 0.013582
+Step: 1029000 Avg reward: -5.666666666666667
+loss is: 0.012034
+loss is: 0.013966
+loss is: 0.011065
+loss is: 0.012062
+loss is: 0.011847
+loss is: 0.015725
+loss is: 0.014330
+Step: 1036000 Avg reward: -2.6666666666666665
+loss is: 0.011745
+loss is: 0.010090
+loss is: 0.010946
+loss is: 0.010419
+
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
